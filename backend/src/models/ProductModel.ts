@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, connect, model } from "mongoose";
 
 const ProductSchema = new Schema({
   name: {
@@ -13,6 +13,8 @@ const ProductSchema = new Schema({
     type: String,
     required: [true, "can't be blank"]
   },
+  manufacturer: String,
+  weight: String,
   category: {
     type: String,
     required: [true, "can't be blank"]
@@ -23,10 +25,14 @@ const ProductSchema = new Schema({
   }
 }, {minimize: false});
 
-const ProductModel = mongoose.model('Product', ProductSchema);
+const ProductModel = model('Product', ProductSchema);
 
 export const loadAllProducts = async () => {
-    return ProductModel.find({}).sort({ timeStamp: -1 }).exec()
-  };
+    return ProductModel.find({}).sort({ _id: -1 }).exec()
+};
+
+export const mongoDbSetUp = async (url: string) => {
+    await connect(url)
+}
 
 export default ProductModel;
