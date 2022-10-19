@@ -3,6 +3,7 @@ import cors from 'cors'
 import dotenv from "dotenv";
 import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const port: number = parseInt(process.env.SERVER_PORT || "3001");
 const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017";
 
 app.use("/products", productRoutes)
+app.use("/users", userRoutes)
 
 app.listen(port, async function () {
     await mongoDbSetUp(mongoDbURL)
