@@ -10,8 +10,12 @@ const OrderSchema = new Schema({
     required: true
   },
   status: {
-    type: String,
-    default: 'processing'
+    type: Array,
+    default: 'registered'
+  },
+  shippingCost: {
+    type: Number, 
+    default: 0
   },
   total : {
     type: Number,
@@ -26,9 +30,6 @@ const OrderSchema = new Schema({
     default: new Date().toISOString().split('T')[0]
   },
   address: {
-    type: String,
-  },
-  country: {
     type: String,
   }
 }, {minimize: false});

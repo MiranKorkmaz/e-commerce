@@ -33,5 +33,4 @@ productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
     }
 })
 
-
 export default productRoutes;
