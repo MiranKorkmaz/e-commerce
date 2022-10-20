@@ -74,7 +74,6 @@ UserSchema.statics.login = async function(username, password) {
 //   return userObject;
 // };
 
-<<<<<<< HEAD
 //   before saving => hash the password
 // UserSchema.pre("save", function (next) {
 //   const user = this;
@@ -92,21 +91,6 @@ UserSchema.statics.login = async function(username, password) {
 //     });
 //   });
 // });
-=======
-// Hash Password Before Saving
-UserSchema.pre("save", function (next) {
-  const user = this;
-  if (!user.isModified("password")) return next();
-  bcrypt.genSalt(10, function (err, salt) {
-    if (err) return next(err);
-    bcrypt.hash(user.password, salt, function (err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
-    });
-  });
-});
->>>>>>> master
 
 // UserSchema.pre("remove", function (next) {
 //   this.$model("Order").remove({ owner: this._id }, next);

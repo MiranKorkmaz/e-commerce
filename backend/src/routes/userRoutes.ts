@@ -3,11 +3,12 @@ import UserModel from "../models/UserModel";
 
 const userRoutes = express.Router();
 
-// REGISTER
-userRoutes.post("/register", async (req: Request, res: Response) => {
+// SIGNUP
+userRoutes.post("/signup", async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     try {
         const user = await UserModel.create({ name, email, password });
+        console.log(user);
         res.json(user);
     } catch (e: unknown) {
         if(e === 11000) return res.status(400).send('Email already exists');

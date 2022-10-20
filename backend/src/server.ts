@@ -4,11 +4,8 @@ import dotenv from "dotenv";
 import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
-<<<<<<< HEAD
-// import jwt from 'jsonwebtoken';
-=======
 import orderRoutes from './routes/orderRoutes';
->>>>>>> master
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
@@ -25,8 +22,25 @@ app.use("/products", productRoutes)
 app.use("/users", userRoutes)
 app.use("/orders", orderRoutes)
 
+app.use((req, _res, next) => {
+    const authHeader = req.header("Authorization")
+    if (authHeader) {
+        const token = authHeader.split(" ")[1]
+        try {
+            const user = jwt.verify(token, JWT_SECRET)
+            req.user = user
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    navigate("/login")
+})
 
 app.listen(port, async function () {
     await mongoDbSetUp(mongoDbURL)
     console.log(`App is listening on port ${port} !`)
 })
+
+function navigate(arg0: string) {
+    throw new Error('Function not implemented.');
+}
