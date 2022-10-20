@@ -9,8 +9,9 @@ type HomeProps = {
 
 const ProductItem = ({allProducts}:HomeProps) => {
     const { id } = useParams();
-
     const product = allProducts.find(product => product._id === id);
+
+    const quantity = 0;
 
     return (
         <>
@@ -24,14 +25,31 @@ const ProductItem = ({allProducts}:HomeProps) => {
                         <img className='thumbnail' src={image} alt={`${product.name} ${index}`}/>
                     ))}
                 </div>
+                
                 <div className='container--product-item-details'>
                     <p><strong>Price:</strong> ${product.price}</p>
                     <p><strong>Weight:</strong> {product.weight} gr.</p>
                     <p><strong>Category:</strong> {product.category}</p>
                     <p className='description'><strong>Description:</strong> {product.description}</p>
                 </div>
+                
+                <div className='container--buy-button'>
+                    {quantity === 0 ? (
+                        <button className='button--addToCart'>Add to Cart</button>
+                    )
+                    : <div className='container--increase-remove-items'>
+                        <div className='container--increase-items'>
+                            <button className='button-decrease'>-</button>
+                            <div><span className='quantity'>{quantity}</span> currently in cart</div>
+                            <button className='button-increase'>+</button>
+                        </div>
+                        <button className='button-remove'>REMOVE</button>
+                    </div>
+                    }
+                </div>
             </div>
-            ):(
+            )
+            : (
                 <h3>Product not found...</h3>
             )}
         </>
