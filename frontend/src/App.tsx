@@ -6,6 +6,7 @@ import IProductItem from "./interfaces/product-item";
 import Home from './pages/Home';
 import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
+import { ShoppingCartProvider } from './context/ShoppingCartContext';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
@@ -54,18 +55,20 @@ function App() {
   useEffect(() => {
     fetchAllProducts();
     fetchProductsFromAllCategories();
-  }, [])
+  }, []);
 
   return (
-    <Router>
-      <Header />
+    <ShoppingCartProvider>
+      <Router>
+        <Header />
 
-      <Routes>
-        <Route path='/' element={<Home allProducts={allProducts}/>}/>
-        <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
-        
-      </Routes>
-    </Router>
+        <Routes>
+          <Route path='/' element={<Home allProducts={allProducts}/>}/>
+          <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
+          
+        </Routes>
+      </Router>
+    </ShoppingCartProvider>
   );
 }
 
