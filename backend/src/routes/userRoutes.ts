@@ -1,13 +1,11 @@
 import express, { Request, Response } from "express";
 import UserModel from "../models/UserModel";
-import User from "../models/UserModel";
 
 const userRoutes = express.Router();
 
 // REGISTER
 userRoutes.post("/register", async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
-
     try {
         const user = await UserModel.create({ name, email, password });
         res.json(user);
