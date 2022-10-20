@@ -1,37 +1,34 @@
-export interface IUserModel {
-    [x: string]: any;
-    _id?: string;
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    password?: string;
-    cart?: ICart;
-    orders?: IOrder[];
+import { Document } from "mongoose";
+export interface IUser extends Document {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  cart: ICart;
+  orders: IOrders[];
 }
 
 export interface ICart {
-    products: IProduct[];
-    total: number;
-    count: number;
+  total: number;
+  count: number;
+}
+
+export interface IOrders {
+  products: IProduct;
+  status: Array<string>;
+  shippingCost: number;
+  total: number;
+  count: number;
+  date: string;
+  address: string;
 }
 
 export interface IProduct {
-    _id: string;
-    name: string;
-    price: number;
-    count: number;
-    image: string;
+  name: string;
+  description: string;
+  price: string;
+  manufacturer: string;
+  weight: string;
+  category: string;
+  pictures: Array<string>;
 }
-
-export interface IOrder {
-    _id: string;
-    products: IProduct[];
-    owner: IUserModel;
-    status: string;
-    shippingCost: number;
-    total: number;
-    count: number;
-    date: string;
-    address: string;
-}
-
