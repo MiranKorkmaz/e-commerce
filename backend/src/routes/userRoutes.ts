@@ -29,7 +29,7 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
 // GET USER
 userRoutes.get("/", async (req: Request, res: Response) => {
     try {
-        const users = await UserModel.find({}) //.populate('orders');
+        const users = await UserModel.find({}).populate('orders');
         res.status(200).json(users);
       } catch {
         res.status(400);

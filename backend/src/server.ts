@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
+import orderRoutes from './routes/orderRoutes';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017"
 
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)
+app.use("/orders", orderRoutes)
 
 app.listen(port, async function () {
     await mongoDbSetUp(mongoDbURL)
