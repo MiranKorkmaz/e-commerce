@@ -1,0 +1,14 @@
+.wrapper--header {
+    padding-top: 40px;
+    padding-left: 50px;
+    padding-bottom: 40px;
+    background-color: rgb(238, 233, 233);
+}
+    .container--nav {
+        display: flex;
+        flex-direction: row;
+        gap: 50px;
+    }
+        .link {
+            font-size: 1.5em;
+        }

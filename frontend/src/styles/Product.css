@@ -1,0 +1,28 @@
+.wrapper--allProducts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 50px;
+}
+
+    .title {
+        /* padding: 50px; */
+        font-size: 2em;
+    }
+
+    .container--all-product-items {
+        display: flex;
+        gap: 50px;
+        flex-wrap: wrap;
+    }
+        .container--product-item {
+
+        }
+            .product-image {
+                width: 300px;
+                height: auto;
+                border-radius: 20px;
+            }
+            .description {
+                max-width: 250px;
+            }
