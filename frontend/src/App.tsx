@@ -1,42 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import './App.css';
+import IProductItem from "./interfaces/product-item";
+import AllProducts from "./components/AllProducts"
+
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
 
-function App() {
-  const [allProducts, setAllProducts] = useState([]);
-  const [allProductsFromCategories, setAllProductsFromCategories] = useState([]);
-  const [allCategories, setAllCategories] = useState([]);
 
+function App() {
+  const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
+  const [allProductsFromCategories, setAllProductsFromCategories] = useState<IProductItem[]>([]);
+  const [allCategories, setAllCategories] = useState<string[]>([]);
+
+  // Fetches all products from /products
   const fetchAllProducts = async () => {
     const response = await axios.get("/products");
-    console.log(response);
+    // console.log(response);
+    setAllProducts(response.data);
+    console.log("allProducts:", allProducts);
+    
+    // Save every product category to an array
+    if(allProducts.length > 0) {
+      saveAllCategoriesToArray(allProducts);
+      console.log("allProducts: ", allCategories);
+    };
   };
-  /*
-  const saveAllCategoriesToArray = () => {
-    if(allProducts) {
-      allProducts.data.map(product => {
-        setAllCategories(product.category);
-      })
-    }
-  };
-  */
-
-
+  
+  // Fetches all products from /products/categories/all
   const fetchProductsFromAllCategories = async () => {
     const response = await axios.get("/products/category/all");
-    console.log("fetchProductsFromAllCategories:" , response);
-    
+    // console.log("fetchProductsFromAllCategories:" , response);
+    setAllProductsFromCategories(response.data)
+    console.log("allProductsFromCategories:", allProductsFromCategories);
   };
 
-  useEffect(() => {
-    fetchAllProducts()
 
+  const saveAllCategoriesToArray = (array:IProductItem[]) => {
+    let categories:string[] = [];
+    
+      array?.map(product => {
+        categories.push(product.category);
+      });
+
+      setAllCategories(categories);
+  };
+  
+  
+
+  useEffect(() => {
+    fetchAllProducts();
+    fetchProductsFromAllCategories();
   }, []);
 
   return (
     <div >
+      <AllProducts />
 
     </div>
   );
