@@ -1,0 +1,28 @@
+.wrapper--ProductItem {
+    margin-top: 50px;
+    margin-left: 50px;
+}
+    .container--product-item{
+
+    }
+        .main-product-image {
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+        .container--thumbnails {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+            .thumbnail {
+                max-width: 200px;
+                height: auto;
+                border-radius: 20px;
+            }
+        .container--product-item-details {
+
+        }
+            .thumbnail {
+
+            }
