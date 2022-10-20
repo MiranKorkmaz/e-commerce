@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import "../styles/Categories.css"
 import IProductItem from '../interfaces/product-item';
 
@@ -16,7 +17,7 @@ const Categories = ({allCategories}:HomeProps) => {
                 <div className='container--phone-category-products'>
                     {allCategories.map((product, index) => product.category === "Phones" ?(
                         <div className='container--phone-category-product' key={index}>
-                            <img className='phone-category-product-image' src={product.pictures[0]} alt={product.name} />
+                            <Link to={`/${product._id}`}><img className='phone-category-product-image' src={product.pictures[0]} alt={product.name} /></Link>
                             <p className='phone-category-product-name'><strong>{product.name}</strong> by {product.manufacturer}</p>
                         </div>
                     ): "")}
@@ -28,7 +29,7 @@ const Categories = ({allCategories}:HomeProps) => {
                 <div className='container--phone-category-products'>
                     {allCategories.map((product, index) => product.category === "Headphones" ?(
                         <div className='container--phone-category-product' key={index}>
-                            <img className='phone-category-product-image' src={product.pictures[0]} alt={product.name} />
+                            <Link to={`/${product._id}`}><img className='phone-category-product-image' src={product.pictures[0]} alt={product.name} /></Link>
                             <p className='phone-category-product-name'><strong>{product.name}</strong> by {product.manufacturer}</p>
                         </div>
                     ): "")}
