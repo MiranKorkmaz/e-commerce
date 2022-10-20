@@ -1,4 +1,5 @@
 import mongoose, { Schema, connect, model } from "mongoose";
+import { IProduct } from "../api/interfaces";
 
 const ProductSchema = new Schema({
   name: {
@@ -25,7 +26,7 @@ const ProductSchema = new Schema({
   }
 }, {minimize: false});
 
-const ProductModel = model('Product', ProductSchema);
+const ProductModel = model<IProduct>('Product', ProductSchema);
 
 export const loadAllProducts = async () => {
     return ProductModel.find({}).sort({ _id: -1 }).exec()

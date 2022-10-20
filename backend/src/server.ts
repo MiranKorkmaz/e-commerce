@@ -4,7 +4,11 @@ import dotenv from "dotenv";
 import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
+<<<<<<< HEAD
 // import jwt from 'jsonwebtoken';
+=======
+import orderRoutes from './routes/orderRoutes';
+>>>>>>> master
 
 dotenv.config();
 
@@ -19,6 +23,7 @@ const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
 
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)
+app.use("/orders", orderRoutes)
 
 
 app.listen(port, async function () {

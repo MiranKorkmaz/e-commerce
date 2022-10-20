@@ -1,0 +1,33 @@
+.categories-title {
+    padding-left: 50px;
+}
+
+.wrapper--categories-page {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+
+    .wrapper--categories {
+        padding-left: 50px;
+    }
+
+        .categories-title {
+            font-size: 2em;
+        }
+
+        .container--phone-category-products {
+                display: flex;
+                flex-direction: row;
+        }
+            .container--phone-category-product {
+                margin-right: 20px;
+            }
+                .phone-category-product-image {
+                    max-width: 200px;
+                    height: auto;
+                    border-radius: 20px;
+                }
+                .phone-category-product-name {
+
+                }
