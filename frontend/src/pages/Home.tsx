@@ -1,5 +1,6 @@
 import React from 'react'
 import Product from '../components/Product';
+import Categories from '../components/Categories';
 import IProductItem from "../interfaces/product-item";
 
 type HomeProps = {
@@ -11,6 +12,7 @@ const Home = ({allProducts}:HomeProps) => {
     <div>
         <h1>Home</h1>
         <Product allProducts={allProducts} />
+        <Categories allCategories={allProducts} />
     </div>
   )
 }
