@@ -1,4 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
+import { IOrders } from "../api/interfaces";
 
 const OrderSchema = new Schema({
   products: {
@@ -34,6 +35,6 @@ const OrderSchema = new Schema({
   }
 }, {minimize: false});
 
-const OrderModel = model('Order', OrderSchema);
+const OrderModel = model<IOrders>('Order', OrderSchema);
 
 export default OrderModel;
