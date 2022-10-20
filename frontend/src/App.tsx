@@ -4,6 +4,8 @@ import axios from "axios";
 import './App.css';
 import IProductItem from "./interfaces/product-item";
 import Home from './pages/Home';
+import ProductItem from './pages/ProductItem';
+import Header from './components/Header';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
@@ -52,16 +54,15 @@ function App() {
   useEffect(() => {
     fetchAllProducts();
     fetchProductsFromAllCategories();
-  }, []);
+  }, [])
 
   return (
     <Router>
-      <div >
-
-      </div>
+      <Header />
 
       <Routes>
         <Route path='/' element={<Home allProducts={allProducts}/>}/>
+        <Route path='/:id' element={<ProductItem/>}/>
         
       </Routes>
     </Router>
