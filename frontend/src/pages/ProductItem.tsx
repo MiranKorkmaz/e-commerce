@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router'
+import { useShoppingCart } from '../context/ShoppingCartContext';
 import IProductItem from '../interfaces/product-item';
 import "../styles/ProductItem.css"
 
@@ -11,7 +12,9 @@ const ProductItem = ({allProducts}:HomeProps) => {
     const { id } = useParams();
     const product = allProducts.find(product => product._id === id);
 
-    const quantity = 0;
+    const { getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart();
+    const quantity = getItemQuantity(product?._id!);
+    
 
     return (
         <>
@@ -35,15 +38,27 @@ const ProductItem = ({allProducts}:HomeProps) => {
                 
                 <div className='container--buy-button'>
                     {quantity === 0 ? (
-                        <button className='button--addToCart'>Add to Cart</button>
+                        <button 
+                            className='button--addToCart'
+                            onClick={() => increaseCartQuantity(product._id!)}
+                        >Add to Cart</button>
                     )
                     : <div className='container--increase-remove-items'>
                         <div className='container--increase-items'>
-                            <button className='button-decrease'>-</button>
+                            <button 
+                                className='button-increase'
+                                onClick={() => increaseCartQuantity(product._id!)}
+                                >+</button>
                             <div><span className='quantity'>{quantity}</span> currently in cart</div>
-                            <button className='button-increase'>+</button>
+                            <button 
+                                className='button-decrease'
+                                onClick={() => decreaseCartQuantity(product._id!)}
+                            >-</button>
                         </div>
-                        <button className='button-remove'>REMOVE</button>
+                        <button 
+                            className='button-remove'
+                            onClick={() => removeFromCart(product._id!)}
+                        >REMOVE</button>
                     </div>
                     }
                 </div>
