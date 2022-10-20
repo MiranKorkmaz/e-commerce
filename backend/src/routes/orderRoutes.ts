@@ -28,7 +28,7 @@ orderRoutes.post('/', async (req: Request, res: Response) => {
 })
 
 // get orders
-orderRoutes.get('/', async(req: Request, res: Response)=> {
+orderRoutes.get('/', async (req: Request, res: Response)=> {
     try {
       const orders = await OrderModel.find().populate('owner', ['email', 'firstName', 'lastName']);
       res.status(200).json(orders);
