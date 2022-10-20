@@ -10,10 +10,14 @@ type TCartItem = {
 };
 
 type ShoppingCartContext = {
+    openCart: () => void
+    closeCart: () => void
     getItemQuantity: (_id: string) => number
     increaseCartQuantity: (_id: string) => void
     decreaseCartQuantity: (_id: string) => void
     removeFromCart: (_id: string) => void
+    cartQuantity: number
+    cartItems: TCartItem[]
 };
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext);
@@ -23,7 +27,14 @@ export function useShoppingCart() {
 };
 
 export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
+    const [isOpen, setIsOpen] = useState(false);
     const [cartItems, setCartItems] = useState<TCartItem[]>([]);
+    // For each item in cartItems, take the item and its quantity and return a total quantity
+    const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0);
+
+
+    const openCart = () => setIsOpen(true);
+    const closeCart = () => setIsOpen(false);
 
     function getItemQuantity(_id: string) {
         return cartItems.find(item => item._id === _id)?.quantity || 0; // if this evaluates to something, get the quantity, if we have nothing, return 0
@@ -78,7 +89,16 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     };
 
     return (
-        <ShoppingCartContext.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart}}>
+        <ShoppingCartContext.Provider value={{
+            getItemQuantity, 
+            increaseCartQuantity, 
+            decreaseCartQuantity, 
+            removeFromCart,
+            openCart,
+            closeCart,
+            cartItems,
+            cartQuantity
+            }}>
             {children}
         </ShoppingCartContext.Provider>
     ) 
