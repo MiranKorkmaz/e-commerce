@@ -1,0 +1,16 @@
+.container--all-product-items {
+    display: flex;
+    gap: 50px;
+    padding: 10%;
+}
+    .container--product-item {
+
+    }
+        .product-image {
+            width: 300px;
+            height: auto;
+            border-radius: 20px;
+        }
+        .description {
+            max-width: 250px;
+        }
