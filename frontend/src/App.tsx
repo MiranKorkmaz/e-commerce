@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import axios from "axios";
 import './App.css';
 import IProductItem from "./interfaces/product-item";
-import AllProducts from "./components/AllProducts"
+import Home from './pages/Home';
 
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
@@ -54,10 +55,16 @@ function App() {
   }, []);
 
   return (
-    <div >
-      <AllProducts />
+    <Router>
+      <div >
 
-    </div>
+      </div>
+
+      <Routes>
+        <Route path='/' element={<Home allProducts={allProducts}/>}/>
+        
+      </Routes>
+    </Router>
   );
 }
 
