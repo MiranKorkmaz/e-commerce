@@ -24,8 +24,8 @@
         .container--product-item-details {
 
         }
-            .thumbnail {
-
+            .description {
+                max-width: 500px
             }
         .container--buy-button {
 
