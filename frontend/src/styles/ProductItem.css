@@ -1,5 +1,6 @@
 .wrapper--ProductItem {
     margin-top: 50px;
+    margin-bottom: 50px;
     margin-left: 50px;
 }
     .container--product-item{
@@ -23,6 +24,37 @@
         .container--product-item-details {
 
         }
-            .thumbnail {
+            .description {
+                max-width: 500px
+            }
+        .container--buy-button {
+
+        }
+            .button--addToCart {
+
+            }
+        .container--increase-remove-items {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+            .container--increase-items {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+                .button-decrease {
+
+                }
+                .quantity {
+                    font-size: 1.5rem;
+                }
+                .button-increase {
+
+                }
+            .button-remove {
 
             }
