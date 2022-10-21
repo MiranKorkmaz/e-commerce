@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
-import ProductModel, { loadAllProducts } from "../models/ProductModel";
+import ProductModel from "../models/ProductModel";
 import UserModel from "../models/UserModel";
 
 const productRoutes = express.Router();
 
 productRoutes.get("/", async (req: Request, res: Response) => {
-    res.send(await loadAllProducts())
+    const search = req.query.search || "";
+    const products = await ProductModel.find({ name: { $regex: search, $options: "i" }}).sort({ _id: -1,  }).exec()
+    res.status(200).json(products)
 });
 
 productRoutes.get("/:id", async (req: Request, res: Response) => {
@@ -32,16 +34,6 @@ productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
     } catch (e: unknown) {
       res.status(400).send(e);
     }
-})
-
-productRoutes.post('/search-products', (req: Request, res: Response) => {
-    let productPattern = new RegExp("^"+ req.body.query)
-    ProductModel.find({name: {$regex: productPattern}})
-    .then(product => {
-        res.json({product})
-    }).catch(err => {
-        console.log(err)
-    })
 })
 
 // Cart Routes

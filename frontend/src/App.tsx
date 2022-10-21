@@ -21,20 +21,20 @@ const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
 function App() {
   const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
-  
+  const [search, setSearch] = useState("");
   const AllProductsContextValue: IAllProductsContext = {
     allProducts: allProducts
   }
 
   // Fetches all products from /products
   const fetchAllProducts = async () => {
-    const response = await axios.get("/products");
+    const response = await axios.get(`/products/&search=${search}`);
     setAllProducts(response.data);
   };
   
   useEffect(() => {
     fetchAllProducts();
-  }, []);
+  }, [search]);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>

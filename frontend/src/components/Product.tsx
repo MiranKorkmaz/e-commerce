@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "../styles/Product.css"
 import { Link } from 'react-router-dom';
 import { AllProductsContext } from "../App";
@@ -8,9 +8,7 @@ const Product = () => {
 
   return (
     <div className='wrapper--allProducts'>
-
         <h2 className='title'>All Products</h2>
-
         <div className='container--all-product-items'> 
             {allProducts?.allProducts.map((product, index) => (
                 <div className='container--product-item' key={index}>
@@ -22,7 +20,6 @@ const Product = () => {
                     <p><strong>Weight:</strong> {product.weight} gr.</p>
                     <p><strong>Category:</strong> {product.category}</p>
                     <p className='description'><strong>Description:</strong> {product.description}</p>
-
                 </div>
             ))}
         </div>
