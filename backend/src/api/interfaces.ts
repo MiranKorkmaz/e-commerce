@@ -29,9 +29,9 @@ export interface IOrders {
 export interface IProduct {
     name: string;
     description: string;
-    price: string;
+    price: number;
     manufacturer: string;
-    weight: string;
+    weight: number;
     category: string;
     pictures: Array<string>;
 }
