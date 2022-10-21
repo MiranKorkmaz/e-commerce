@@ -34,6 +34,16 @@ productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
     }
 })
 
+productRoutes.post('/search-products', (req: Request, res: Response) => {
+    let productPattern = new RegExp("^"+ req.body.query)
+    ProductModel.find({name: {$regex: productPattern}})
+    .then(product => {
+        res.json({product})
+    }).catch(err => {
+        console.log(err)
+    })
+})
+
 // Cart Routes
 productRoutes.post('/add-to-cart', async (req, res)=> {
     const {userId, productId, price} = req.body;

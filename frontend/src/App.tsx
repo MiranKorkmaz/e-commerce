@@ -8,7 +8,7 @@ import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 
 function App() {
@@ -26,30 +26,23 @@ function App() {
     // Save every product category to an array
     if(allProducts.length > 0) {
       saveAllCategoriesToArray(allProducts);
-      console.log("allProducts: ", allCategories);
     };
   };
   
   // Fetches all products from /products/categories/all
   const fetchProductsFromAllCategories = async () => {
     const response = await axios.get("/products/category/all");
-    // console.log("fetchProductsFromAllCategories:" , response);
     setAllProductsFromCategories(response.data)
-    console.log("allProductsFromCategories:", allProductsFromCategories);
   };
 
 
   const saveAllCategoriesToArray = (array:IProductItem[]) => {
     let categories:string[] = [];
-    
       array?.map(product => {
         categories.push(product.category);
       });
-
       setAllCategories(categories);
   };
-  
-  
 
   useEffect(() => {
     fetchAllProducts();
@@ -59,11 +52,9 @@ function App() {
   return (
     <Router>
       <Header />
-
       <Routes>
         <Route path='/' element={<Home allProducts={allProducts}/>}/>
         <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
-        
       </Routes>
     </Router>
   );
