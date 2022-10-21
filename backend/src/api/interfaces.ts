@@ -4,16 +4,14 @@ export interface IUser extends Document {
     lastName: string;
     email: string;
     password: string;
-    cart: {
-        [x: string]: number;
-    };
+    cart: ICart
     orders: IOrders[];
 }
 
 export interface ICart {
     total: number;
     count: number;
-    productId: number;
+    [productId: string]: number;
 }
 
 export interface IOrders {
