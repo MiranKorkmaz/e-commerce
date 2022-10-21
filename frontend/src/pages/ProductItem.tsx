@@ -1,5 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router'
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container } from 'react-bootstrap';
 import { useShoppingCart } from '../context/ShoppingCartContext';
 import IProductItem from '../interfaces/product-item';
 import "../styles/ProductItem.css"
@@ -14,18 +16,27 @@ const ProductItem = ({allProducts}:HomeProps) => {
 
     const { getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart();
     const quantity = getItemQuantity(product?._id!);
-    
 
     return (
-        <>
+        <Container>
             {product ? (
                 <div className='wrapper--ProductItem'>
                 <div className='container--product-item'></div>
                 <h1>{product?.name} by {product.manufacturer}</h1>
-                <img className='main-product-image' src={product.pictures[0]} alt={product.name} />
+                <img 
+                    className='main-product-image' 
+                    src={product.pictures[0]} alt={product.name} 
+                    style={{width: "500px", height: "auto", objectFit: "cover"}}
+                />
                 <div className='container--thumbnails'>
                     {product?.pictures.map((image, index) => (
-                        <img className='thumbnail' src={image} alt={`${product.name} ${index}`}/>
+                        <img 
+                            key={index} 
+                            className='thumbnail' 
+                            src={image} 
+                            alt={`${product.name} ${index}`}
+                            style={{width: "150px", height: "auto", objectFit: "cover"}}
+                        />
                     ))}
                 </div>
                 
@@ -67,7 +78,7 @@ const ProductItem = ({allProducts}:HomeProps) => {
             : (
                 <h3>Product not found...</h3>
             )}
-        </>
+        </Container>
     )
 }
 
