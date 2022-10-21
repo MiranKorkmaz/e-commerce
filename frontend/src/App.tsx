@@ -10,6 +10,7 @@ import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
+import { SearchProduct } from './components/SearchProduct';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -26,9 +27,9 @@ function App() {
     allProducts: allProducts
   }
 
-  // Fetches all products from /products
+  // Fetches all products from /products and an optional search
   const fetchAllProducts = async () => {
-    const response = await axios.get(`/products/&search=${search}`);
+    const response = await axios.get(`/products/?search=${search}`);
     setAllProducts(response.data);
   };
   
@@ -42,6 +43,7 @@ function App() {
         <Container className="mb-4">
           <Router>
             <Header />
+            <SearchProduct setSearch={setSearch} />
             <Routes>
               <Route path='/' element={<Home />}/>
               <Route path='/about' element={<About />}/>
