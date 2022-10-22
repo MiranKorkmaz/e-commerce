@@ -10,7 +10,7 @@ import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
-import { SearchProduct } from './components/SearchProduct';
+import { CategoryPage } from './pages/CategoryPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -43,11 +43,11 @@ function App() {
         <Container className="mb-4">
           <Router>
             <Header />
-            <SearchProduct setSearch={setSearch} />
             <Routes>
-              <Route path='/' element={<Home />}/>
+              <Route path='/' element={<Home setSearch={setSearch} />}/>
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
+              <Route path='/categories' element={<CategoryPage />} />
             </Routes>
           </Router>
         </Container>

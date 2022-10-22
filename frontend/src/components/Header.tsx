@@ -13,6 +13,7 @@ const Header = () => {
           <Nav className='me-auto'>
             <Nav.Link to="/" as={ NavLink }>HOME</Nav.Link>
             <Nav.Link to="/about" as={ NavLink }>ABOUT</Nav.Link>
+            <Nav.Link to="/categories" as={ NavLink }>CATEGORIES</Nav.Link>
           </Nav>
           <Button onClick={openCart} style={{width: "3rem", height: "3rem"}} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart2" viewBox="0 0 16 16">
