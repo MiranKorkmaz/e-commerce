@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import { IUser } from "../api/interfaces";
 
@@ -15,19 +15,11 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     unique: true,
-    validate: {
-      validator: function (str: string) {
-        return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(str);
-      },
-      message: (props: { value: string }) =>
-        `${props.value} is not a valid email`,
-    },
   },
   password: {
     type: String,
     required: true,
   },
-
   cart: {
     type: Object,
     default: {
@@ -40,32 +32,43 @@ const UserSchema = new Schema({
 
 
 
-/*FROM BACKEND 2*/
-UserSchema.pre(
-  "save",
-  async function(next) {
-      const hash = await bcrypt.hash(this.password, 10)
-      this.password = hash
-      next()
-  })
-
-UserSchema.statics.login = async function(username, password) {
-  const user = await this.findOne({username})
-  if (user && await bcrypt.compare(password, user.password)) {
-      return user
+UserSchema.pre<IUser>('save', async function (next) {
+  if (!this.isModified('password')) {
+      return next();
   }
-  return null
-}
-/*FROM BACKEND 2*/
+
+  const hash = await bcrypt.hash(this.password, 10);
+
+  this.password = hash;
+
+  next();
+});
+
+UserSchema.methods.isValidPassword = async function (
+  password: string
+): Promise<Error | boolean> {
+  return await bcrypt.compare(password, this.password);
+};
+
+const UserModel = mongoose.model<IUser>("User", UserSchema);
+
+export default UserModel;
+
+
+
+
+
+
+
 
 
 // UserSchema.statics.findByCredentials = async function(email, password) {
-//     const user = await User.find({email});
+//     const user = await UserModel.find({email});
 //     if(!user) throw new Error('invalid credentials');
-//     const isSamePassword = bcrypt.compareSync(password, user.password);
-//     if(isSamePassword) return user;
-//     throw new Error('invalid credentials');
-//   }
+//     const isSamePassword = await bcrypt.compare(password, user[0].password);
+//     if(!isSamePassword) throw new Error('invalid credentials');
+//     return user;
+// }
 
 // UserSchema.methods.toJSON = function () {
 //   const user = this;
@@ -74,7 +77,7 @@ UserSchema.statics.login = async function(username, password) {
 //   return userObject;
 // };
 
-//   before saving => hash the password
+//   // before saving => hash the password
 // UserSchema.pre("save", function (next) {
 //   const user = this;
 
@@ -96,6 +99,6 @@ UserSchema.statics.login = async function(username, password) {
 //   this.$model("Order").remove({ owner: this._id }, next);
 // });
 
-const UserModel = mongoose.model<IUser>("User", UserSchema);
+// const UserModel = mongoose.model<IUser>("User", UserSchema);
 
-export default UserModel;
+// export default UserModel;

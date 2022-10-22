@@ -35,3 +35,14 @@ export interface IProduct {
     category: string;
     pictures: Array<string>;
 }
+
+export interface IUser {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    cart: {
+        [x: string]: number;
+    };
+    orders: IOrders[];
+}

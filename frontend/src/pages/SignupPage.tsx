@@ -1,44 +1,8 @@
-import { sign } from 'crypto'
 import React, { useState } from 'react'
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
 
 
-export default function SignupPage() {
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-
-    const navigate = useNavigate()
-    
-    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-        console.log(firstName, lastName, email, password)
-
-        const payload = {
-            firstName,
-            lastName,
-            email,
-            password,
-        }
-
-        // We want to send the data
-        const url = 'http://localhost:3001'
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-            navigate('/')
-        })
-
-    }
 
   return (
     <Container>
@@ -66,10 +30,17 @@ export default function SignupPage() {
                         <Form.Control type="password" value={password} required onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
 
-                    <Button className="signup__form--button" type="submit">Sign Up</Button>
+                    <Form.Group>
+                    <Button type="submit">Sign Up</Button>
+                    </Form.Group>
+
                 </Form>
             </Col>
         </Row>
     </Container>
   )
 }
+
+export default SignupPage
+
+

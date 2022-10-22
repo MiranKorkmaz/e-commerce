@@ -5,42 +5,35 @@ import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
-import jwt from 'jsonwebtoken';
+import UserModel from './models/UserModel';
+import bodyParser from "body-parser";
 
 dotenv.config();
 
 const app: Application = express()
-app.use(cors())
+
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:4000'
+}))
+
 app.use(json())
 app.use(urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({extended: true}))
 
 const port: number = parseInt(process.env.SERVER_PORT || "3001");
-const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017";
-const JWT_SECRET: string = process.env.JWT_SECRET || "secret";
+const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017/";
 
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)
 app.use("/orders", orderRoutes)
 
-app.use((req, _res, next) => {
-    const authHeader = req.header("Authorization")
-    if (authHeader) {
-        const token = authHeader.split(" ")[1]
-        try {
-            const user = jwt.verify(token, JWT_SECRET)
-            req.user = user
-        } catch (e) {
-            console.log(e)
-        }
-    }
-    navigate("/login")
+app.get('/cors', (_req: Request, res: Response) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    })
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`)
+    mongoDbSetUp(mongoDbURL)
 })
 
-app.listen(port, async function () {
-    await mongoDbSetUp(mongoDbURL)
-    console.log(`App is listening on port ${port} !`)
-})
-
-function navigate(arg0: string) {
-    throw new Error('Function not implemented.');
-}
