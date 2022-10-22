@@ -12,6 +12,7 @@ import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
 import { SignupPage } from './pages/SignupPage';
+import { LoginPage } from './pages/LoginPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -52,6 +53,7 @@ function App() {
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
               <Route path='/signup' element={<SignupPage />}/> 
+              <Route path='/login' element={<LoginPage />}/>
             </Routes>
           </Router>
         </Container>

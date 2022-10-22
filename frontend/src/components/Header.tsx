@@ -14,6 +14,7 @@ const Header = () => {
             <Nav.Link to="/" as={ NavLink }>HOME</Nav.Link>
             <Nav.Link to="/about" as={ NavLink }>ABOUT</Nav.Link>
             <Nav.Link to="/signup" as={ NavLink }>SIGN UP</Nav.Link>
+            <Nav.Link to="/login" as={ NavLink }>LOGIN</Nav.Link>
           </Nav>
           <Button onClick={openCart} style={{width: "3rem", height: "3rem"}} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart2" viewBox="0 0 16 16">
