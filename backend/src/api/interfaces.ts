@@ -1,19 +1,17 @@
-import { Document } from "mongoose";
+import { Document, Model } from "mongoose";
 export interface IUser extends Document {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    cart: {
-        [x: string]: number;
-    };
+    cart: ICart
     orders: IOrders[];
 }
 
 export interface ICart {
     total: number;
     count: number;
-    productId: number;
+    [productId: string]: number;
 }
 
 export interface IOrders {
@@ -29,20 +27,9 @@ export interface IOrders {
 export interface IProduct {
     name: string;
     description: string;
-    price: string;
+    price: number;
     manufacturer: string;
-    weight: string;
+    weight: number;
     category: string;
     pictures: Array<string>;
-}
-
-export interface IUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    cart: {
-        [x: string]: number;
-    };
-    orders: IOrders[];
 }

@@ -11,11 +11,11 @@ const ProductSchema = new Schema({
     required: [true, "can't be blank"]
   },
   price: {
-    type: String,
+    type: Number,
     required: [true, "can't be blank"]
   },
   manufacturer: String,
-  weight: String,
+  weight: Number,
   category: {
     type: String,
     required: [true, "can't be blank"]

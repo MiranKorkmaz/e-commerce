@@ -14,7 +14,7 @@ const app: Application = express()
 
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:4000'
+    origin: 'http://localhost:3000'
 }))
 
 app.use(json())

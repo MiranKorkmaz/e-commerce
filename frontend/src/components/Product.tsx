@@ -1,20 +1,18 @@
-import React from 'react'
+import React, { useContext } from "react";
 import "../styles/Product.css"
-import IProductItem from "../interfaces/product-item";
 import { Link } from 'react-router-dom';
+import { AllProductsContext } from "../App";
 
-type HomeProps = {
-    allProducts: IProductItem[]
-};
+const Product = () => {
+    const allProducts = useContext(AllProductsContext);
 
-const Product = ({allProducts}:HomeProps) => {
   return (
     <div className='wrapper--allProducts'>
 
         <h2 className='title'>All Products</h2>
 
         <div className='container--all-product-items'> 
-            {allProducts.map((product, index) => (
+            {allProducts?.allProducts.map((product, index) => (
                 <div className='container--product-item' key={index}>
                     <Link to={`/${product._id}`}><img className='product-image' src={product.pictures[0]} alt={product.name} /></Link>
                     <br/>

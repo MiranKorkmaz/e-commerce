@@ -7,33 +7,27 @@ const userRoutes = express.Router();
 
 // SIGNUP
 userRoutes.post("/signup", async (req: Request, res: Response) => {
-  const { firstName, lastName, email, password } = req.body
+  const { firstName, lastName, email, password } = req.body;
   try {
-      const user = await UserModel.create({ firstName, lastName, email, password })      
-      const token = jwt.sign({ email, password }, "secret123", { expiresIn: "1h" })
-      res.status(200).json({ user, token })
+    const user = await UserModel.create({
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    res.header("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader("Access-Control-Max-Age", "1800");
+    res.setHeader("Access-Control-Allow-Headers", "content-type");
+    res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+    );
+    res.json(user);
   } catch (error) {
-      res.status(500).json({message: "Something went wrong"})
+    res.status(500).json({ message: "Something went wrong" });
   }
 })
-  
-  
-
-  
-  
-//   const { firstName, lastName, email, password } = req.body;
-
-//     try {
-//         const user = await UserModel.create({ firstName, lastName, email, password });
-//         res.status(201).json({ user });
-//     } catch (error) {
-//         res.status(400).json({ message: "User could not be created" });
-//     }
-// });
-
-    // const user = new UserModel({firstName, lastName, email, password})
-    // await user.save()
-    // res.json({firstName, lastName, email, password})
 
 
 // LOGIN
