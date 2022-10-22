@@ -39,7 +39,7 @@ const UserSchema = new Schema({
 });
 
 // UserSchema.statics.findByCredentials = async function(email, password) {
-//     const user = await User.find({email});
+//     const user = await UserSchema.find({email});
 //     if(!user) throw new Error('invalid credentials');
 //     const isSamePassword = bcrypt.compareSync(password, user.password);
 //     if(isSamePassword) return user;
