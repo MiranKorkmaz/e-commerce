@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState, createContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
@@ -10,8 +11,9 @@ import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
+import { SignupPage } from './pages/SignupPage';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 interface IAllProductsContext {
   allProducts: IProductItem[] 
@@ -26,6 +28,8 @@ function App() {
     allProducts: allProducts
   }
 
+
+
   // Fetches all products from /products
   const fetchAllProducts = async () => {
     const response = await axios.get("/products");
@@ -34,6 +38,7 @@ function App() {
   
   useEffect(() => {
     fetchAllProducts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -46,6 +51,7 @@ function App() {
               <Route path='/' element={<Home />}/>
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
+              <Route path='/signup' element={<SignupPage />}/> 
             </Routes>
           </Router>
         </Container>
