@@ -33,7 +33,7 @@ export const SignupPage = () => {
         e.preventDefault();
         userSignUp();
         console.log("You have signed up!")
-        navigate("/")
+        navigate("/login")
     }
 
 

@@ -7,14 +7,13 @@ import { useNavigate } from 'react-router-dom'
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 export const LoginPage = () => {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState({});
     const navigate = useNavigate();
 
     const userLogin = async () => {
-        const { data } = await axios.post("/users/login", {
+        const { data } = await axios.post("/users/", {
             email: email,
             password: password
         })

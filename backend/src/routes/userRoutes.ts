@@ -42,7 +42,7 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
 })
 
 // GET USER
-userRoutes.get("/", async (req: Request, res: Response) => {
+userRoutes.get("/profile", async (req: Request, res: Response) => {
     try {
         const users = await UserModel.find({});
         res.status(200).json(users);
