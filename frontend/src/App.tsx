@@ -36,8 +36,7 @@ function App() {
   
   useEffect(() => {
     fetchAllProducts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [search]);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>

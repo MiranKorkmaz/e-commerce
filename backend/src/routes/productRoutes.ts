@@ -28,7 +28,7 @@ productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
       if (category == "all") {
         products = await ProductModel.find({}).sort({ _id: -1 }).exec();
       } else {
-        products = await ProductModel.find({category}).sort({ _id: -1 }).exec()
+        products = await ProductModel.find({ category }).sort({ _id: -1 }).exec()
       }
       res.status(200).json(products)
     } catch (e: unknown) {
