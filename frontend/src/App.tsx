@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState, createContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
@@ -10,7 +11,7 @@ import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
-import { CategoryPage } from './pages/CategoryPage';
+import { SignupPage } from './pages/SignupPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -27,7 +28,7 @@ function App() {
     allProducts: allProducts
   }
 
-  // Fetches all products from /products and an optional search
+  // Fetches all products from /products
   const fetchAllProducts = async () => {
     const response = await axios.get(`/products/?search=${search}`);
     setAllProducts(response.data);
@@ -35,7 +36,8 @@ function App() {
   
   useEffect(() => {
     fetchAllProducts();
-  }, [search]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>
@@ -47,7 +49,7 @@ function App() {
               <Route path='/' element={<Home setSearch={setSearch} />}/>
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
-              <Route path='/categories' element={<CategoryPage />} />
+              <Route path='/signup' element={<SignupPage />}/> 
             </Routes>
           </Router>
         </Container>
