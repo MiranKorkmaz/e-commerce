@@ -1,5 +1,6 @@
-import { useContext, useEffect } from "react";
-import { Offcanvas, Stack } from "react-bootstrap";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Offcanvas, Stack } from "react-bootstrap";
 import { AllProductsContext } from "../App";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
@@ -26,9 +27,23 @@ interface ICartContents {
     userId?: string
 }
 
+export const UserCartContext = createContext<ICartContents | null>(null);
+
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
+    const navigate = useNavigate();
     const allProducts = useContext(AllProductsContext);
     const { closeCart, cartItems } = useShoppingCart();
+
+    
+    // User Cart Context
+    const [userCart, setUserCart] = useState<ICartContents>({});
+    interface IUserCartContext {
+        userCart: ICartContents
+    }
+    const UserCartContextValue: IUserCartContext = {
+        userCart: userCart
+    }
+
 
     let totalOrder:number = 0;
     let mockUserId: string = "mock-user-id";
@@ -74,7 +89,8 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
     const saveCartToMongoDb = async (cartContents:ICartContents) => {
         await updateCartContents(cartContents, cartItems);
-        const response = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, cartContents);
+        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, cartContents);
+        setUserCart(response);
         return response;
     };
     const getUserCart = async () => {
@@ -82,9 +98,14 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
         return response;
     }
 
+    const goToCheckout = () => {
+        console.log(cartContents);
+        navigate("/checkout");
+    };
 
     useEffect(() => {
         saveCartToMongoDb(cartContents);
+        // console.log(cartContents)
     }, [cartItems]);
 
     return (
@@ -108,9 +129,12 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                         }, 0)
                         +  updateShppingCost(cartItems))} 
                     </div>
-                    
+                    {cartContents.subTotal > 0 && (
+                        <Button onClick={goToCheckout}>CHECKOUT</Button>
+                    )}
                 </Stack>
             </Offcanvas.Body>
         </Offcanvas>
     ) 
 }
+
