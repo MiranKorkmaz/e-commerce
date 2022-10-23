@@ -15,7 +15,7 @@ const mockUserData = {
 }
 
 // Create Cart
-cartRoutes.post("/", async (req: Request, res: Response) => {
+cartRoutes.post("/:id", async (req: Request, res: Response) => {
     JSON.stringify(req.body);
     // console.log("req.body: ", req.body);
     const { cartItems, shippingCost, subTotal, total, userId } = req.body;
@@ -48,7 +48,7 @@ cartRoutes.post("/", async (req: Request, res: Response) => {
     } 
     catch (error) {
         console.log(error);
-        // res.status(500).send(error);
+        res.status(500).send(error);
     }
 
 
@@ -63,8 +63,9 @@ cartRoutes.post("/", async (req: Request, res: Response) => {
 // Get User Cart
 cartRoutes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
+
     try {
-        const userCart = await CartModel.findById(id);   
+        const userCart = await CartModel.findOne({userId: id}).exec();   
         res.status(200).json({userCart});
     } 
     catch (error) {
