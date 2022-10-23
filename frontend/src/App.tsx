@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import axios from "axios";
 import { Container } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,6 +11,7 @@ import Header from './components/Header';
 import About from './pages/About';
 
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
+
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
 
@@ -42,14 +43,14 @@ function App() {
     <AllProductsContext.Provider value={AllProductsContextValue}>
         <ShoppingCartProvider>
           <Container className="mb-4">
-            <Router>
+            {/* <Router> */}
               <Header />
               <Routes>
                 <Route path='/' element={<Home />}/>
                 <Route path='/about' element={<About />}/>
                 <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
               </Routes>
-            </Router>
+            {/* </Router> */}
           </Container>
         </ShoppingCartProvider>
     </AllProductsContext.Provider>
