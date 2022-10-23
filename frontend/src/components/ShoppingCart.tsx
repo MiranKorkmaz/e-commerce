@@ -68,29 +68,28 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     };
 
     const addProductDetailsToCartContent = (cartItems:TCartItem[]) => {
-        cartItems.find(cartProduct => {
-            allProducts?.allProducts.map(product => {
-                if(product._id === cartProduct._id) {
-                    cartContents?.cartItems?.map(cartItem => {
-                        cartItem.name = product.name;
-                        cartItem.manufacturer = product.manufacturer;
-                        cartItem.image = product.pictures[0];
-                    });
+        cartItems.map(product => {
+            allProducts?.allProducts.map(allProductsItem => {
+                if(product._id === allProductsItem._id){
+                    product.name = allProductsItem.name;
+                    product.manufacturer = allProductsItem.manufacturer;
+                    product.image = allProductsItem.pictures[0];
                 }
             })
+            
         })
     };
 
     const updateCartContents = (cartContents:ICartContents, cartItems:TCartItem[]) => {
-        cartContents.cartItems = cartItems;
-        addProductDetailsToCartContent(cartItems);
-        cartContents.total = cartContents.subTotal! + cartContents.shippingCost!;
+        cartContents.cartItems = cartItems; // Adds an array with the product items in the cart
+        cartContents.total = cartContents.subTotal! + cartContents.shippingCost!; // Adds the total
+        addProductDetailsToCartContent(cartContents.cartItems);
     }
 
     const saveCartToMongoDb = async (cartContents:ICartContents) => {
         await updateCartContents(cartContents, cartItems);
         const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, cartContents);
-        setUserCart(response);
+        // setUserCart(response);
         return response;
     };
     const getUserCart = async () => {
@@ -105,7 +104,6 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
     useEffect(() => {
         saveCartToMongoDb(cartContents);
-        // console.log(cartContents)
     }, [cartItems]);
 
     return (
