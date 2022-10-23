@@ -4,6 +4,7 @@ import { AllProductsContext } from "../App";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
+import axios from "axios";
 
 type TShoppingCartProps = {
     isOpen: boolean
@@ -71,10 +72,19 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
         cartContents.total = cartContents.subTotal! + cartContents.shippingCost!;
     }
 
+    const saveCartToMongoDb = async (cartContents:ICartContents) => {
+        await updateCartContents(cartContents, cartItems);
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, cartContents);
+        return response;
+    };
+    const getUserCart = async () => {
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`);
+        return response;
+    }
+
 
     useEffect(() => {
-        updateCartContents(cartContents, cartItems);
-        console.log("cartContents: ", cartContents);
+        saveCartToMongoDb(cartContents);
     }, [cartItems]);
 
     return (
@@ -98,6 +108,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                         }, 0)
                         +  updateShppingCost(cartItems))} 
                     </div>
+                    
                 </Stack>
             </Offcanvas.Body>
         </Offcanvas>
