@@ -48,7 +48,7 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
     } 
     catch (error) {
         console.log(error);
-        res.status(500).send(error);
+        res.status(500);
     }
 
 
@@ -63,7 +63,7 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
 // Get User Cart
 cartRoutes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
-
+    console.log(id);
     try {
         const userCart = await CartModel.findOne({userId: id}).exec();   
         res.status(200).json({userCart});
