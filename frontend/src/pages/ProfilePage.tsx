@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { response } from 'express'
+
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 export const ProfilePage = () => {
 
@@ -8,22 +12,20 @@ export const ProfilePage = () => {
   const [loggedUserEmail, setLoggedUserEmail] = useState("")
 
   const navigate = useNavigate();
-
-  const token = localStorage.getItem("backend3-ecom")
-
-  const fetchUser = async () => {
-    const response = await fetch("http://localhost:4000/users/", {
+  
+  const getUser = async () => {
+    const response = await axios.get("http://localhost:4000/users/", {
       headers: {
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${localStorage.getItem("backend3-ecom")}`
       }
     })
-    const data = await response.json()
-    setLoggedUserFirstname(data.firstname)
-    setLoggedUserLastname(data.lastname)
-    setLoggedUserEmail(data.email)
+    console.log(response.data)
+    setLoggedUserFirstname(response.data.firstname)
+    setLoggedUserLastname(response.data.lastname)
+    setLoggedUserEmail(response.data.email)
   }
 
-
+    
   function handleOnClick() {
     localStorage.removeItem("backend3-ecom")
     setLoggedUserFirstname("")
@@ -34,15 +36,15 @@ export const ProfilePage = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-        fetchUser()
-    }, 1000)
+        getUser()
+    }, 2000)
     return () => clearInterval(interval)
 }, []);
 
 
   return (
     <div>
-            {loggedUserFirstname && loggedUserLastname && loggedUserEmail ? (
+            {loggedUserEmail ? (
                 <div>
                     <h1>Profile</h1>
                     <p>Firstname: {loggedUserFirstname}</p>
