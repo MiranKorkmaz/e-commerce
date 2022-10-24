@@ -58,7 +58,7 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
 
 // LOGIN USER 
 userRoutes.post("/login", async (req: Request, res: Response) => {
-    
+
     // try {
       const { email, password } = req.body;
 
@@ -79,7 +79,6 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
         );
         // save user token
         user.token = token;
-
         // user
         console.log(`THINK I GOT IN ${user}`);
         return res.status(200).json(user);
@@ -89,18 +88,23 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
 
 
 
-
-
-
 // GET USER
 userRoutes.get("/profile", auth, async (req: Request, res: Response) => {
-    try {
-        const users = await UserModel.find({});
-        res.status(200).json(users);
-      } catch {
-        res.status(400);
-      }
-    })
+  const user = await UserModel.findById(req.body.user_id);
+  res.status(200).json(user);
+});
+
+
+// userRoutes.get("/profile", auth, async (req: Request, res: Response) => {
+//     try {
+//         const users = await UserModel.find({});
+//         res.status(200).json(users);
+//       } catch {
+//         res.status(400);
+//       }
+//     })
+
+
 
 
 // GET USER ORDERS
@@ -114,3 +118,7 @@ userRoutes.get("/:id/orders", async (req: Request, res: Response) => {
     })
 
 export default userRoutes;
+
+function useState(arg0: any): [any, any] {
+  throw new Error("Function not implemented.");
+}

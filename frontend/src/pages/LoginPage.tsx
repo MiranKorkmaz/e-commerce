@@ -3,6 +3,7 @@ import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { IUser } from '../interfaces/user-item'
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -14,11 +15,17 @@ export const LoginPage = () => {
 
     const userLogin = async () => {
         console.log(`userLogin 1 ${email} ${password}`)
-        const data = await axios.post("/users/login", {
+        const data = await axios.post<IUser>("/users/login", {
             email: email,
             password: password,
         })
         setLogin(data);
+
+            const response = await axios.post("/users/login", { email, password })
+            const token = response.data.token;
+            console.log(token);
+            localStorage.setItem("backend3-ecom", token)
+        
         // console.log(`userLogin 2 ${email}`)
         // navigate("/");   
     }
