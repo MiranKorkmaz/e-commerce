@@ -6,20 +6,7 @@ const productRoutes = express.Router();
 
 productRoutes.get("/", async (req: Request, res: Response) => {
     const search = req.query.search || "";
-    let category = req.query.category || "All";
-    const categories = [
-        "Headphones",
-        "Phones",
-        "Gaming Consoles",
-        "Cameras",
-        "Speakers"
-    ]
-    category === "All"
-        ? (category = [...categories])
-        : (category = (req.query.category as string).split(","));
-    const products = await ProductModel.find({ name: { $regex: search, $options: "i" }, category: { $in: [...category] }}).sort({ _id: -1, })
-        .where("category")
-        .in([...category])
+    const products = await ProductModel.find({ name: { $regex: search, $options: "i" }}).sort({ _id: -1, })
     res.status(200).json(products)
 });
 

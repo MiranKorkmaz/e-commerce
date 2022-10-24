@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 
 export default interface IProductItem {
     _id?: string,

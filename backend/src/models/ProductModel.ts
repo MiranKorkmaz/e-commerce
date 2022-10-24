@@ -17,7 +17,7 @@ const ProductSchema = new Schema({
   manufacturer: String,
   weight: Number,
   category: {
-    type: [String],
+    type: String,
     required: [true, "can't be blank"]
   },
   pictures: {
