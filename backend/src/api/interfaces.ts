@@ -1,22 +1,23 @@
 import { Document, Model } from "mongoose";
-// export interface IUser extends Document {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     password: string;
-//     cart: ICart
-//     orders: IOrders[];
-// }
-
-export interface IUser {
-    token? : any;
+export interface IUser extends Document {
     firstName: string;
     lastName: string;
     email: string;
     password: string;
-    cart: ICart
+    cart: ICart;
     orders: IOrders[];
+    token: string;
 }
+
+// export interface IUser {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     password: string;
+//     cart: ICart;
+//     orders: IOrders[];
+//     token: string;
+// }
 
 
 export interface ICart {

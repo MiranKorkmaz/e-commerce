@@ -1,24 +1,22 @@
-import jwt, { Secret, JwtPayload } from 'jsonwebtoken';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 
-export const SECRET_KEY: Secret = 'vaxcdnvmabsfqwrgthuq43251425uygbfhasdhf';
+const config = process.env
 
-// export interface CustomRequest extends Request {
-//  token: string | JwtPayload;
-// }
+const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+    const token = req.body.token
 
-// export const auth = async (req: Request, res: Response, next: NextFunction) => {
-//  try {
-//    const token = req.header('Authorization')?.replace('Bearer ', '');
-//    if (!token) {
-//      throw new Error();
-//    }
-//    const decoded = jwt.verify(token, SECRET_KEY);
-//    (req as CustomRequest).token = decoded;
-//    next();
-//  } catch (err) {
-//    res.status(401).send('Please authenticate');
-//  }
-// };
+    if (!token) {
+        return res.status(403).send({ message: "No token provided!" });
+    }
+    try {
+        const decoded = jwt.verify(token, config.TOKEN_KEY || "klöasjdfgjf3q4itjiasv");
+        req.body = decoded;
+    } catch (error) {
+        return res.status(401).send({ message: "Unauthorized!" });
+    }
+    return next();
+};
 
+export default verifyToken;
     

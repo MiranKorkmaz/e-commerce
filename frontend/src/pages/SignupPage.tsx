@@ -19,15 +19,15 @@ export const SignupPage = () => {
             email: email,
             password: password,
             firstName: firstName,
-            lastName: lastName
+            lastName: lastName,
         })
         setSignUp(data);
         console.log(data)
     }
 
-    useEffect(() => {
-        userSignUp();
-    }, [])
+    // useEffect(() => {
+    //     userSignUp();
+    // }, [])
 
     const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
