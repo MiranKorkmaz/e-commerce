@@ -17,6 +17,17 @@ import { ProfilePage } from './pages/ProfilePage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
+axios.interceptors.request.use((config) => {
+  if (!config?.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("jwt");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
+
 interface IAllProductsContext {
   allProducts: IProductItem[] 
 }

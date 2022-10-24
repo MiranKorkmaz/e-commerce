@@ -6,6 +6,7 @@ import "../styles/Header.css"
 
 const Header = () => {
   const { openCart, cartQuantity } = useShoppingCart();
+  // const isLoggedUser = localStorage.getItem("token");
 
   return (
     <NavbarBs sticky="top" className="bg-white shadow-sm mb-3">
@@ -16,6 +17,7 @@ const Header = () => {
             <Nav.Link to="/signup" as={ NavLink }>SIGN UP</Nav.Link>
             <Nav.Link to="/login" as={ NavLink }>LOGIN</Nav.Link>
             <Nav.Link to="/profile" as={ NavLink }>PROFILE</Nav.Link>
+            {/* {loggedUser ? <Nav.Link to="/logout" as={ NavLink }>LOGOUT</Nav.Link> : null} */}
           </Nav>
           <Button onClick={openCart} style={{width: "3rem", height: "3rem"}} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart2" viewBox="0 0 16 16">

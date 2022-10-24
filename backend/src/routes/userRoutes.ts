@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
+import { JsonWebTokenError } from "jsonwebtoken";
 import UserModel from "../models/UserModel";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const userRoutes = express.Router();
@@ -23,7 +23,19 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
       "Access-Control-Allow-Methods",
       "PUT, POST, GET, DELETE, PATCH, OPTIONS"
     );
-    res.json(user);
+
+    // Create token
+    const token = jwt.sign(
+      { user_id: user._id, email },
+        process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv",
+      {
+        expiresIn: "1h",
+      }
+    );
+    // save user token
+    user.token = token;
+
+    res.status(201).json(user);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -33,9 +45,22 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
 // LOGIN
 userRoutes.post("/login", async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    console.log(`userRoutes.post.LOGIN with email: ${email} and password: ${password}`);
     try {
-      const user = await UserModel.find(email, password);
+      const user = await UserModel.find({
+        email, 
+        password
+      });
+      res.header("Access-Control-Allow-Origin", "*");
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader("Access-Control-Max-Age", "1800");
+      res.setHeader("Access-Control-Allow-Headers", "content-type");
+      res.setHeader(
+      "Access-Control-Allow-Methods",
+      "PUT, POST, GET, DELETE, PATCH, OPTIONS"
+      );
         res.json(user);
+        console.log(`RES.JSON with email: ${email} and password: ${password}`);
     } catch (e: unknown) {
         res.status(400).send(e)
     }

@@ -5,8 +5,12 @@ import { mongoDbSetUp } from './models/ProductModel';
 import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
-import UserModel from './models/UserModel';
 import bodyParser from "body-parser";
+import jwt from 'jsonwebtoken';
+import next from 'next';
+import { IUser } from './api/interfaces';
+
+const JWTSECRET = process.env.JWT_SECRET;
 
 dotenv.config();
 
@@ -21,6 +25,7 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(bodyParser.urlencoded({extended: true}))
 
+
 const port: number = parseInt(process.env.SERVER_PORT || "3001");
 const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017/";
 
@@ -32,6 +37,7 @@ const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017/
 //         res.sendStatus(401);
 //     }
 //   }
+
 
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)

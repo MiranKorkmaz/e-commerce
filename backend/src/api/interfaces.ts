@@ -1,5 +1,15 @@
 import { Document, Model } from "mongoose";
-export interface IUser extends Document {
+// export interface IUser extends Document {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     password: string;
+//     cart: ICart
+//     orders: IOrders[];
+// }
+
+export interface IUser {
+    token? : any;
     firstName: string;
     lastName: string;
     email: string;
@@ -7,6 +17,7 @@ export interface IUser extends Document {
     cart: ICart
     orders: IOrders[];
 }
+
 
 export interface ICart {
     total: number;
