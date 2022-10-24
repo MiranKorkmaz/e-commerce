@@ -3,65 +3,60 @@ import { useNavigate } from 'react-router-dom'
 
 export const ProfilePage = () => {
 
-  const [myData, setMyData] = useState({})
+  const [loggedUserFirstname, setLoggedUserFirstname] = useState("")
+  const [loggedUserLastname, setLoggedUserLastname] = useState("")
+  const [loggedUserEmail, setLoggedUserEmail] = useState("")
+
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchData()
-    console.log(myData)
-  }, []);
+  const token = localStorage.getItem("backend3-ecom")
 
-  function fetchData () {
-    const url = 'http://localhost:4000/users/profile'
-    const token = localStorage.getItem('backend3-ecom')
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    };
-    fetch(url, { 
-      headers: headers 
+  const fetchUser = async () => {
+    const response = await fetch("http://localhost:4000/users/", {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
     })
-      .then(response => response.json())
-      .then(data => setMyData(data))
+    const data = await response.json()
+    setLoggedUserFirstname(data.firstname)
+    setLoggedUserLastname(data.lastname)
+    setLoggedUserEmail(data.email)
   }
 
 
   function handleOnClick() {
     localStorage.removeItem("backend3-ecom")
-    setMyData("")
-    // sessionStorage.removeItem("todoapp")
+    setLoggedUserFirstname("")
+    setLoggedUserLastname("")
+    setLoggedUserEmail("")
     navigate("/")
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+        fetchUser()
+    }, 1000)
+    return () => clearInterval(interval)
+}, []);
 
 
   return (
     <div>
-            {myData && (
-              console.log(myData),
-                <>
-                    <h2>THE USER IS LOGGED IN</h2>
-                    
-                </>
-            )}
-
-           <button onClick={handleOnClick}>Log out</button>
+            {loggedUserFirstname && loggedUserLastname && loggedUserEmail ? (
+                <div>
+                    <h1>Profile</h1>
+                    <p>Firstname: {loggedUserFirstname}</p>
+                    <p>Lastname: {loggedUserLastname}</p>
+                    <p>Email: {loggedUserEmail}</p>
+                    <button onClick={handleOnClick}>Log out</button>
+                </div>
+            ) : (
+                <div>
+                    <h1>Profile</h1>
+                    <p>You are not logged in</p>
+                </div>
+            )}  
     </div>
   )
 
-
-//     <div className='wrapper--allProducts'>
-
-//     <h2 className='title'>User profile</h2>
-
-//     <div className='container--all-product-items'> 
-//             <div className='container--product-item'>
-//                 <br />
-//                 <p><strong>First name:</strong></p>
-//                 <p><strong>Last name:</strong></p>
-//                 <p><strong>E-mail:</strong></p>
-//             </div>
-//     </div>
-// </div>
-//   )
 }
