@@ -12,7 +12,6 @@ import Header from './components/Header';
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import About from './pages/About';
 import { SignupPage } from './pages/SignupPage';
-import { CategoryPage } from './pages/CategoryPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -25,6 +24,7 @@ const AllProductsContext = createContext<IAllProductsContext | null>(null);
 function App() {
   const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
   const [search, setSearch] = useState("");
+
   const AllProductsContextValue: IAllProductsContext = {
     allProducts: allProducts
   }
@@ -46,12 +46,12 @@ function App() {
           <Router>
             <Header />
             <Routes>
-              <Route path='/' element={<Home setSearch={setSearch} />}/>
+              <Route path='/' element={<Home 
+                    setSearch={setSearch} 
+            />}/>
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
               <Route path='/signup' element={<SignupPage />}/> 
-              <Route path='/categories' 
-                element={<CategoryPage /> } />
             </Routes>
           </Router>
         </Container>

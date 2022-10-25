@@ -11,6 +11,7 @@ export default interface IProductItem {
     pictures: string[]
 };
 
-export interface ISearchProduct {
-    setSearch: React.Dispatch<React.SetStateAction<string>>
+export interface ISearch {
+    setSearch: React.Dispatch<React.SetStateAction<string>>,
+
 }

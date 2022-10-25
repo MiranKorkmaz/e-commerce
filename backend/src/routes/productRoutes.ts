@@ -21,7 +21,7 @@ productRoutes.get("/:id", async (req: Request, res: Response) => {
       }
 })
 
-productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
+productRoutes.get('/categories', async (req: Request, res: Response)=> {
     const {category} = req.params;
     try {
       let products;

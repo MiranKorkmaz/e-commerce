@@ -5,7 +5,7 @@ import { AllProductsContext } from "../App";
 
 const Product = () => {
     const allProducts = useContext(AllProductsContext);
-
+    
   return (
     <div className='wrapper--allProducts'>
         <h2 className='title'>All Products</h2>
