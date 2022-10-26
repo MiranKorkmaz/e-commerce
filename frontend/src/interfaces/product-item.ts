@@ -1,4 +1,4 @@
-import React, { DetailedHTMLProps, HTMLAttributes } from "react";
+import React from "react";
 
 export default interface IProductItem {
     _id?: string,
@@ -12,6 +12,5 @@ export default interface IProductItem {
 };
 
 export interface ISearch {
-    setSearch: React.Dispatch<React.SetStateAction<string>>,
-
+    setSearch: React.Dispatch<React.SetStateAction<string>>
 }

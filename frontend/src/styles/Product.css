@@ -28,3 +28,7 @@
 .product-search {
     width: 100%;
 }
+
+.category-inputs {
+    position: sticky;
+}
