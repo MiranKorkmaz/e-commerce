@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import "../styles/Product.css"
 import { Link } from 'react-router-dom';
 import { AllProductsContext } from "../App";
+import { Form } from "react-bootstrap"
 
 export const Product = () => {
     const allProducts = useContext(AllProductsContext);
@@ -9,7 +10,6 @@ export const Product = () => {
     const [checked, setChecked] = useState<string[]>([]);
 
     const handleFilters = (filters: string[]) => {
-        const newFilters = { ...filters };
         setFilters(filters);
     };
 
@@ -48,6 +48,10 @@ export const Product = () => {
                             className="category-inputs"
                         />
                         <label htmlFor={category}>{category}</label>
+                        {/* <Form.Select aria-label="Default select example">
+                            <option>Open this select menu</option>
+                            <option value="1">{category}</option>
+                        </Form.Select> */}
                     </div>
                 ))}
             </div>

@@ -32,3 +32,19 @@
 .category-inputs {
     position: sticky;
 }
+
+.container--categories {
+    background-color: #0078bf;
+	border-radius: 20px;
+  color: white;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 1.125rem;
+	font-weight: 700; 
+	line-height: 1.6875rem;
+	margin-top: 0 !important;
+	padding: .5rem .8rem;
+	-webkit-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
