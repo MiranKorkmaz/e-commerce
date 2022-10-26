@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import ProductModel, { loadAllProducts } from "../models/ProductModel";
 import UserModel from "../models/UserModel";
+import jwt from "jsonwebtoken";
 
 const productRoutes = express.Router();
 

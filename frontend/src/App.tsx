@@ -16,18 +16,8 @@ import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { UserContext } from './pages/LoginPage';
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
-axios.interceptors.request.use((config) => {
-  if (!config?.headers) {
-    config.headers = {};
-  }
-  const jwt = localStorage.getItem("jwt");
-  if (jwt) {
-    config.headers["authorization"] = `Bearer ${jwt}`;
-  }
-  return config;
-});
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 interface IAllProductsContext {
   allProducts: IProductItem[] 
@@ -69,7 +59,7 @@ function App() {
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
               <Route path='/signup' element={<SignupPage />}/> 
               <Route path='/login' element={<LoginPage /> }/>
-              <Route path='/user/:id' element={<ProfilePage />}/>
+              <Route path='/user/:id' element={<ProfilePage />} />
               <Route path='*' element={<h1>404 - Not Found</h1>}/>
             </Routes>
           </Router>

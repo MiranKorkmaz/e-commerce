@@ -6,9 +6,6 @@ import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import bodyParser from "body-parser";
-import verifyToken from './middleware/auth';
-
-const auth = verifyToken;
 
 dotenv.config();
 

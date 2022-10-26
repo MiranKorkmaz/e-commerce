@@ -26,7 +26,7 @@ export const LoginPage = () => {
 
 
     const userLogin = async () => {
-
+        
         const data = await axios.post<IUser>("/users/login", {
             email: email,
             password: password,
@@ -48,7 +48,7 @@ export const LoginPage = () => {
        if (userId) {
         navigate(`/user/${userId}`)
     }
-    }, [userId])
+    }, [navigate, userId])
 
 
   return (
@@ -83,6 +83,9 @@ export const LoginPage = () => {
         </Col>
     </Row>
 </Container>
+
+
+
     )
 }
 

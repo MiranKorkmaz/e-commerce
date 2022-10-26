@@ -4,7 +4,6 @@ import axios from 'axios'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Form } from 'react-bootstrap';
 
-
 // axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 export const ProfilePage = () => {
@@ -22,9 +21,8 @@ export const ProfilePage = () => {
 
   const { id } = useParams()
   const navigate = useNavigate()
-  
-  const token = localStorage.getItem("backend3-ecom")
 
+  const token = localStorage.getItem("backend3-ecom")
   
   const getUser = async () => {
     try {
@@ -44,6 +42,10 @@ export const ProfilePage = () => {
   }
 
   const handleLogout = () => {
+    setLoggedUserDeliveryAdress("")
+    setLoggedUserEmail("")
+    setLoggedUserFirstname("")
+    setLoggedUserLastname("")
     localStorage.removeItem("backend3-ecom")
     navigate("/")
   }
@@ -68,11 +70,9 @@ export const ProfilePage = () => {
     }
     window.location.reload();
   }
-
-
-  
+   
   useEffect(() => { 
-    getUser()
+      getUser()
   }, [])
 
 
@@ -81,16 +81,19 @@ export const ProfilePage = () => {
             {!loggedUserEmail ? (
               <div>
               <h1>You are not logged in</h1>
+              <h2>TOKEN: {token}</h2>
+              <h2>LOGGED USER EMAIL: {loggedUserEmail}</h2>
             </div>
               ) : (
               <div>
                 <div>
                     <h1>Profile</h1>
                     <br />
-                    <h4>Firstname: {loggedUserFirstname}</h4>
-                    <h4>Lastname: {loggedUserLastname}</h4>
-                    <h4>Email: {loggedUserEmail}</h4>
-                    <h4>Delivery adress: {loggedUserDeliveryAdress}</h4>
+                    <h4>First name: <i>{loggedUserFirstname}</i></h4>
+                    <h4>Last name: <i>{loggedUserLastname}</i></h4>
+                    <h4>Email: <i>{loggedUserEmail}</i></h4>
+                    <h4>Delivery adress: <i>{loggedUserDeliveryAdress}</i></h4>
+                    <h4>Token: <i>{token}</i></h4>
                     <br />
 
                     <button onClick={handleLogout}>Log out</button>
