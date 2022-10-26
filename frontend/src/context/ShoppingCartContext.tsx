@@ -51,8 +51,10 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     const [cartItems, setCartItems] = useState<TCartItem[]>([]); // this is where all of our cart information is stored
 
     // Fetch specific user's cart data
-    const loggedInUser: string = "mock-user-id" // Sets the username attached to the Cart to the logged-in user's username
+    // const loggedInUser:string | undefined = undefined
+    const loggedInUser:string | undefined = "mock-user-id" // Sets the username attached to the Cart to the logged-in user's username
     let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
+    
     const fetchUserCart = async () => {
         const response = await axios.get(`${url}`);
         await setCartItems(response.data.userCart.cartItems);
@@ -131,7 +133,9 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     };
 
     useEffect(() => {
-        fetchUserCart();
+        if(loggedInUser) {
+            fetchUserCart();
+        }
     }, []);
 
     return (
