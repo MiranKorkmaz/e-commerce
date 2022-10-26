@@ -5,13 +5,11 @@ import bcrypt from "bcrypt";
 import verifyToken from "../middleware/auth";
 
 const userRoutes = express.Router();
-// const auth = verifyToken;
-
 
 // NEW USER SIGNUP
 userRoutes.post("/signup", async (req: Request, res: Response) => {
   try {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, deliveryAdress } = req.body;
 
   if (!(email && password && firstName && lastName)) {
     res.status(400).send("All input is required");
@@ -19,24 +17,14 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
 
   //Encrypt user password
   const encryptedUserPassword = await bcrypt.hash(password, 10);
-
     const user = await UserModel.create({
       firstName,
       lastName,
-      email: email.toLowerCase(), // sanitize: convert email to lowercase
+      deliveryAdress,
+      email: email.toLowerCase(),
       password: encryptedUserPassword,
     });
-    // res.header("Access-Control-Allow-Origin", "*");
-    // res.setHeader("Access-Control-Allow-Credentials", "true");
-    // res.setHeader("Access-Control-Max-Age", "1800");
-    // res.setHeader("Access-Control-Allow-Headers", "content-type");
-    // res.setHeader(
-    //   "Access-Control-Allow-Methods",
-    //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-    // );
-
-    //Encrypt user password  
-
+    
     // Create token
     const token = jwt.sign(
       { user_id: user._id, email },
@@ -45,6 +33,7 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
         expiresIn: "1h",
       }
     );
+    
     // save user token
     user.token = token;
 
@@ -80,7 +69,6 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
         // save user token
         user.token = token;
         // user
-        console.log(`THINK I GOT IN ${user}`);
         return res.status(200).json(user);
       }
       return res.status(400).send({ message: "Invalid Credentials" });
@@ -97,7 +85,7 @@ userRoutes.get("/", async (req: Request, res: Response) => {
   }
 })
 
-
+// GET LOGGED IN USER
 userRoutes.get("/user/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -109,18 +97,16 @@ userRoutes.get("/user/:id", async (req: Request, res: Response) => {
 })
 
 
-
-
-// userRoutes.get("/profile", auth, async (req: Request, res: Response) => {
-//     try {
-//         const users = await UserModel.find({});
-//         res.status(200).json(users);
-//       } catch {
-//         res.status(400);
-//       }
-//     })
-
-
+// UPDATE USER
+userRoutes.put("/user/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+  const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true })
+  res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+})
 
 
 // GET USER ORDERS

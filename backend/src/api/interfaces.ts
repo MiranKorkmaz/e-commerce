@@ -4,6 +4,7 @@ export interface IUser extends Document {
     lastName: string;
     email: string;
     password: string;
+    deliveryAdress: string;
     cart: ICart;
     orders: IOrders[];
     token: string;

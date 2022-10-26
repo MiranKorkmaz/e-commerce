@@ -4,9 +4,9 @@ import { Form } from 'react-bootstrap'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IUser } from '../interfaces/user-item'
-import context from 'react-bootstrap/esm/AccordionContext'
-import { create } from 'domain'
-import { isConstructorDeclaration } from 'typescript'
+// import context from 'react-bootstrap/esm/AccordionContext'
+// import { create } from 'domain'
+// import { isConstructorDeclaration } from 'typescript'
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -22,9 +22,8 @@ export const LoginPage = () => {
     const [userId, setUserId] = useState();
     const navigate = useNavigate();
 
-    const UserContextValue = user ? user : null;
+    // const UserContextValue = user ? user : null;
 
-    // const { id } = useParams()
 
     const userLogin = async () => {
 
@@ -36,7 +35,6 @@ export const LoginPage = () => {
 
             const response = await axios.post("/users/login", { email, password })
             const token = response.data.token;
-            console.log(response.data)
             setUserId(response.data._id);
             localStorage.setItem("backend3-ecom", token)
     }
@@ -44,12 +42,9 @@ export const LoginPage = () => {
     const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         userLogin();
-        console.log(userId)
-        console.log("You have logged in!")
     }
 
     useEffect(() => {
-       console.log(userId)
        if (userId) {
         navigate(`/user/${userId}`)
     }
@@ -75,7 +70,7 @@ export const LoginPage = () => {
                 <Form.Group id="password">
                     <Form.Label>Password</Form.Label>
                     <Form.Control 
-                    type="text" 
+                    type="password" 
                     value={password} 
                     required 
                     onChange={(e) => setPassword(e.target.value)} />
@@ -84,10 +79,6 @@ export const LoginPage = () => {
                 <Form.Group>
                 <Button type="submit">Log in</Button>
                 </Form.Group>
-                <p>User: {user?.email}</p>
-                <p>ContextValue: {UserContextValue?.email}</p>
-
-                
             </Form>
         </Col>
     </Row>

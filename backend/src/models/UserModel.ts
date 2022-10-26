@@ -22,6 +22,14 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  phone: {
+    type: String,
+    required: false,
+  },
+  deliveryAdress: {
+  type: String,
+  required: false,
+},
   cart: {
     type: Object,
     default: {
