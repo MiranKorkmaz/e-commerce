@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState, createContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,6 +14,7 @@ import About from './pages/About';
 import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { UserContext } from './pages/LoginPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -36,12 +37,12 @@ const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
 function App() {
   const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
-  
+
   const AllProductsContextValue: IAllProductsContext = {
     allProducts: allProducts
   }
 
-
+  const user = useContext (UserContext);
 
   // Fetches all products from /products
   const fetchAllProducts = async () => {
@@ -51,12 +52,14 @@ function App() {
   
   useEffect(() => {
     fetchAllProducts();
+    console.log(user);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>
       <ShoppingCartProvider>
+        <UserContext.Provider value={user}>
         <Container className="mb-4">
           <Router>
             <Header />
@@ -65,12 +68,13 @@ function App() {
               <Route path='/about' element={<About />}/>
               <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
               <Route path='/signup' element={<SignupPage />}/> 
-              <Route path='/login' element={<LoginPage />}/>
-              <Route path='/profile' element={<ProfilePage />}/>
+              <Route path='/login' element={<LoginPage /> }/>
+              <Route path='/user/:id' element={<ProfilePage />}/>
               <Route path='*' element={<h1>404 - Not Found</h1>}/>
             </Routes>
           </Router>
         </Container>
+        </UserContext.Provider>
       </ShoppingCartProvider>
     </AllProductsContext.Provider>
   );

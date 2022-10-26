@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 const config = process.env
 
-const verifyToken = (req: Request, res: Response, next: NextFunction) => {
+const auth = (req: Request, res: Response, next: NextFunction) => {
     const token = req.body.token
 
     if (!token) {
@@ -18,5 +18,5 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     return next();
 };
 
-export default verifyToken;
+export default auth;
     

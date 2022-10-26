@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import verifyToken from "../middleware/auth";
 
 const userRoutes = express.Router();
-const auth = verifyToken;
+// const auth = verifyToken;
 
 
 // NEW USER SIGNUP
@@ -60,13 +60,13 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
 userRoutes.post("/login", async (req: Request, res: Response) => {
 
     // try {
-      const { email, password } = req.body;
+      const { email, password, _id } = req.body;
 
       if (!email || !password) {
         res.status(400).send({ message: "Please enter all fields" });
       }
       
-      const user = await UserModel.findOne({ email: email.toLowerCase()});
+      const user = await UserModel.findOne({ email: email.toLowerCase(), id: _id});
 
       if (user && (await bcrypt.compare(password, user.password))) {
         // Create token
@@ -87,12 +87,28 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
     })
 
 
-
-// GET USER
-userRoutes.get("/profile", auth, async (req: Request, res: Response) => {
-  const user = await UserModel.findById(req.body.user_id);
+// GET ALL USER;
+userRoutes.get("/", async (req: Request, res: Response) => {
+  try {
+  const user = await UserModel.find({})
   res.status(200).json(user);
-});
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+})
+
+
+userRoutes.get("/user/:id", async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+  const user = await UserModel.findById(id)
+  res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
+  }
+})
+
+
 
 
 // userRoutes.get("/profile", auth, async (req: Request, res: Response) => {
@@ -119,6 +135,3 @@ userRoutes.get("/:id/orders", async (req: Request, res: Response) => {
 
 export default userRoutes;
 
-function useState(arg0: any): [any, any] {
-  throw new Error("Function not implemented.");
-}

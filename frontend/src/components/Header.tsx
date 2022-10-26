@@ -1,11 +1,12 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { useShoppingCart } from '../context/ShoppingCartContext'
 import "../styles/Header.css"
 
 const Header = () => {
   const { openCart, cartQuantity } = useShoppingCart();
+  const { id } = useParams()
   // const isLoggedUser = localStorage.getItem("token");
 
   return (
@@ -16,7 +17,7 @@ const Header = () => {
             <Nav.Link to="/about" as={ NavLink }>ABOUT</Nav.Link>
             <Nav.Link to="/signup" as={ NavLink }>SIGN UP</Nav.Link>
             <Nav.Link to="/login" as={ NavLink }>LOGIN</Nav.Link>
-            <Nav.Link to="/profile" as={ NavLink }>PROFILE</Nav.Link>
+            <Nav.Link to={`/user/${id}`} as={ NavLink }>PROFILE</Nav.Link>
             {/* {loggedUser ? <Nav.Link to="/logout" as={ NavLink }>LOGOUT</Nav.Link> : null} */}
           </Nav>
           <Button onClick={openCart} style={{width: "3rem", height: "3rem"}} >

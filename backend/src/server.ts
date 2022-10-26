@@ -29,7 +29,8 @@ const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017/
 app.use("/products", productRoutes)
 app.use("/users", userRoutes)
 app.use("/orders", orderRoutes)
-app.use("/profile", cors(), auth, userRoutes)
+// app.use("/profile", cors(), auth, userRoutes)
+app.use("/profile", userRoutes)
 
 app.get('/cors', (_req: Request, res: Response) => {
     res.set('Access-Control-Allow-Origin', '*');

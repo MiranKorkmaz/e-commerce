@@ -1,20 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, createContext, useEffect } from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { Form } from 'react-bootstrap'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { IUser } from '../interfaces/user-item'
+import context from 'react-bootstrap/esm/AccordionContext'
+import { create } from 'domain'
+import { isConstructorDeclaration } from 'typescript'
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
+
+export const UserContext = createContext<IUser | null>(null) 
+console.log(UserContext)
+
 
 export const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [login, setLogin] = useState({});
+    const [user, setUser] = useState<IUser | null>(null);
+    const [userId, setUserId] = useState();
     const navigate = useNavigate();
 
+    const UserContextValue = user ? user : null;
+
+    // const { id } = useParams()
+
     const userLogin = async () => {
-        console.log(`userLogin 1 ${email} ${password}`)
+
         const data = await axios.post<IUser>("/users/login", {
             email: email,
             password: password,
@@ -23,19 +36,25 @@ export const LoginPage = () => {
 
             const response = await axios.post("/users/login", { email, password })
             const token = response.data.token;
-            console.log(token);
+            console.log(response.data)
+            setUserId(response.data._id);
             localStorage.setItem("backend3-ecom", token)
-        
-        // console.log(`userLogin 2 ${email}`)
-        // navigate("/");   
     }
 
     const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         userLogin();
+        console.log(userId)
         console.log("You have logged in!")
-        navigate("/profile")
     }
+
+    useEffect(() => {
+       console.log(userId)
+       if (userId) {
+        navigate(`/user/${userId}`)
+    }
+    }, [userId])
+
 
   return (
     <Container>
@@ -65,7 +84,10 @@ export const LoginPage = () => {
                 <Form.Group>
                 <Button type="submit">Log in</Button>
                 </Form.Group>
+                <p>User: {user?.email}</p>
+                <p>ContextValue: {UserContextValue?.email}</p>
 
+                
             </Form>
         </Col>
     </Row>

@@ -19,19 +19,29 @@ productRoutes.get("/:id", async (req: Request, res: Response) => {
       }
 })
 
-productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
+productRoutes.get('/products?category=:category', async (req: Request, res: Response) => {
     const {category} = req.params;
+
     try {
-      let products;
-      if (category == "all") {
-        products = await ProductModel.find({}).sort({ _id: -1 }).exec();
-      } else {
-        products = await ProductModel.find({category}).sort({ _id: -1 }).exec()
+        const products = await ProductModel.find({category});
+        res.status(200).json(products);
+      } catch {
+        res.status(400);
       }
-      res.status(200).json(products)
-    } catch (e: unknown) {
-      res.status(400).send(e);
-    }
+
+
+
+    // try {
+    //   let products;
+    //   if (category == "all") {
+    //     products = await ProductModel.find({}).sort({ _id: -1 }).exec();
+    //   } else {
+    //     products = await ProductModel.find({category}).sort({ _id: -1 }).exec()
+    //   }
+    //   res.status(200).json(products)
+    // } catch (e: unknown) {
+    //   res.status(400).send(e);
+    // }
 })
 
 // Cart Routes
