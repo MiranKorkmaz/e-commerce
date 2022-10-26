@@ -52,7 +52,7 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
 
     // Fetch specific user's cart data
     const loggedInUser: string = "mock-user-id" // Sets the username attached to the Cart to the logged-in user's username
-    let url = `http://localhost:4000/cart/${loggedInUser}`
+    let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
     const fetchUserCart = async () => {
         const response = await axios.get(`${url}`);
         await setCartItems(response.data.userCart.cartItems);
