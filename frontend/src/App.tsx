@@ -1,5 +1,6 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useState, createContext, useMemo } from 'react';
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import { Container } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -9,10 +10,12 @@ import Home from './pages/Home';
 import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
 import About from './pages/About';
+
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
+import { SignupPage } from './pages/SignupPage';
 
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:3001"
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 // AllProducts Context
 interface IAllProductsContext {
@@ -85,6 +88,8 @@ function App() {
     allProducts: allProducts
   }
 
+
+
   // Fetches all products from /products
   const fetchAllProducts = async () => {
     const response = await axios.get("/products")
@@ -103,24 +108,26 @@ function App() {
   useEffect(() => {
     // fetchUserCart();
     fetchAllProducts();
-    // console.log("test: ", test)
+
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>
+
       <UserCartContext.Provider value={UserCartContextValue}>
         <ShoppingCartProvider>
-        <p>userCart._id: {userCart?._id}</p>
-        <p>userCart.subTotal: {userCart?.subTotal}</p>
           <Container className="mb-4">
-            {/* <Router> */}
+            <Router>
               <Header />
               <Routes>
                 <Route path='/' element={<Home allProducts={allProducts}/>}/>
                 <Route path='/about' element={<About />}/>
                 <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
+                <Route path='/signup' element={<SignupPage />}/> 
               </Routes>
-            {/* </Router> */}
+            </Router>
           </Container>
         </ShoppingCartProvider>
       </UserCartContext.Provider>
