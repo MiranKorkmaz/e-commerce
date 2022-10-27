@@ -72,7 +72,11 @@ export const ProfilePage = () => {
   }
    
   useEffect(() => { 
+    if(token) {
       getUser()
+    } else {
+      navigate("/login")
+    }
   }, [])
 
 

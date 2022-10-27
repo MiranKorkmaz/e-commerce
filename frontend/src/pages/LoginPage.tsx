@@ -4,9 +4,6 @@ import { Form } from 'react-bootstrap'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import { IUser } from '../interfaces/user-item'
-// import context from 'react-bootstrap/esm/AccordionContext'
-// import { create } from 'domain'
-// import { isConstructorDeclaration } from 'typescript'
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
@@ -21,9 +18,6 @@ export const LoginPage = () => {
     const [user, setUser] = useState<IUser | null>(null);
     const [userId, setUserId] = useState();
     const navigate = useNavigate();
-
-    // const UserContextValue = user ? user : null;
-
 
     const userLogin = async () => {
         

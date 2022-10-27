@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import ProductModel, { loadAllProducts } from "../models/ProductModel";
 import UserModel from "../models/UserModel";
-import jwt from "jsonwebtoken";
 
 const productRoutes = express.Router();
 
@@ -13,7 +12,6 @@ productRoutes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const product = await ProductModel.findById(id);
-        // const similar = await ProductModel.find({category: product.category}).limit(5);
         res.status(200).json({product})
       } catch {
         res.status(400);
@@ -29,20 +27,6 @@ productRoutes.get('/products?category=:category', async (req: Request, res: Resp
       } catch {
         res.status(400);
       }
-
-
-
-    // try {
-    //   let products;
-    //   if (category == "all") {
-    //     products = await ProductModel.find({}).sort({ _id: -1 }).exec();
-    //   } else {
-    //     products = await ProductModel.find({category}).sort({ _id: -1 }).exec()
-    //   }
-    //   res.status(200).json(products)
-    // } catch (e: unknown) {
-    //   res.status(400).send(e);
-    // }
 })
 
 // Cart Routes

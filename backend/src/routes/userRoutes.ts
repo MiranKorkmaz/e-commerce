@@ -2,8 +2,10 @@ import express, { Request, Response } from "express";
 import UserModel from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { authUser } from "../services/auth";
 
 const userRoutes = express.Router();
+const JWT_SECRET = process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv";
 
 // NEW USER SIGNUP
 userRoutes.post("/signup", async (req: Request, res: Response) => {
@@ -65,9 +67,7 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
             expiresIn: "1h",
           }
         );
-        // save user token
         user.token = token;
-        // user
         return res.status(200).json(user);
       }
       return res.status(400).send({ message: "Invalid Credentials" });
@@ -87,6 +87,8 @@ userRoutes.get("/", async (req: Request, res: Response) => {
 // GET LOGGED IN USER
 userRoutes.get("/user/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
+  const user2 = req.body.user;
+  console.log(`USER ROUTES req.dody.user = user2: ${JSON.stringify(user2)}`);
   try {
   const user = await UserModel.findById(id)
   res.status(200).json(user);
@@ -94,7 +96,6 @@ userRoutes.get("/user/:id", async (req: Request, res: Response) => {
     res.status(500).json({ message: "Something went wrong" });
   }
 })
-
 
 // UPDATE USER
 userRoutes.put("/user/:id", async (req: Request, res: Response) => {
