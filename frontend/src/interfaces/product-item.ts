@@ -1,6 +1,6 @@
 import React from "react";
 
-export default interface IProductItem {
+export interface IProductItem {
     _id?: string,
     name: string,
     description: string,
@@ -10,6 +10,10 @@ export default interface IProductItem {
     category: string,
     pictures: string[]
 };
+
+export interface IAllProductsContext {
+    allProducts: IProductItem[]
+}
 
 export interface ISearch {
     setSearch: React.Dispatch<React.SetStateAction<string>>
