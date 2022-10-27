@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Offcanvas, Stack } from "react-bootstrap";
-import { AllProductsContext } from "../App";
+import { AllProductsContext, UserCartContext } from "../App";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
@@ -17,6 +17,8 @@ type TCartItem = {
     name?: string
     manufacturer?: string
     image?: string
+    price?: number
+    weight?: number
 };
 interface ICartContents {
     _id?: string
@@ -27,75 +29,72 @@ interface ICartContents {
     userId?: string
 }
 
-export const UserCartContext = createContext<ICartContents | null>(null);
-
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     const navigate = useNavigate();
     const allProducts = useContext(AllProductsContext);
+    
     const { closeCart, cartItems } = useShoppingCart();
 
-    
     // User Cart Context
-    const [userCart, setUserCart] = useState<ICartContents>({});
-    interface IUserCartContext {
-        userCart: ICartContents
-    }
-    const UserCartContextValue: IUserCartContext = {
-        userCart: userCart
-    }
+    const {userCart, setUserCart} = useContext(UserCartContext);
 
+    let shippingCostPerUnit: number = 3;
 
-    let totalOrder:number = 0;
-    let mockUserId: string = "mock-user-id";
-
-    const cartContents:ICartContents = {};
-    cartContents.subTotal = totalOrder;
-    cartContents.shippingCost = 0;
-    cartContents.userId = mockUserId;
-
-    const updateShppingCost = (cartItems:TCartItem[]) => {
-        let totalShippingCost = 0;
-        let shippingCost = 3;
-
-        if(cartItems.length > 0 ) {
-            let totalItems:number = 0;
-            cartItems.map(items => totalItems = totalItems + items.quantity);
-            totalShippingCost = shippingCost * totalItems;
-        }
-        cartContents.shippingCost = totalShippingCost;
-            
-        return cartContents.shippingCost
+    const cartContents:ICartContents = {
+        _id: userCart?._id,
+        subTotal: userCart?.subTotal,
+        shippingCost: userCart?.shippingCost,
+        total: userCart?.total,
+        userId: userCart?.userId,
+        cartItems: userCart?.cartItems,
     };
 
-    const addProductDetailsToCartContent = (cartItems:TCartItem[]) => {
-        cartItems.map(product => {
-            allProducts?.allProducts.map(allProductsItem => {
-                if(product._id === allProductsItem._id){
-                    product.name = allProductsItem.name;
-                    product.manufacturer = allProductsItem.manufacturer;
-                    product.image = allProductsItem.pictures[0];
-                }
-            })
+    const saveCartToMongoDb = async (userCart:ICartContents) => {
+
+        //0. add cartItems to userCart.cartItems
+        userCart.cartItems = cartItems;
+
+        //1. map through userCart.cartItems and calculate:
+        if(userCart) {
+
+            // a. Apply the fields name, manufacturer, price to every product in cartItems
+            await userCart?.cartItems!.map(product => {
+                allProducts?.allProducts.map(allProductsItem => {
+                    if(product._id === allProductsItem._id){
+                        product.name = allProductsItem.name;
+                        product.manufacturer = allProductsItem.manufacturer;
+                        product.image = allProductsItem.pictures[0];
+                        product.price = allProductsItem.price;
+                        product.manufacturer = allProductsItem.manufacturer;
+                    }
+                })
+            });
+
+            // b. Calculate the subtotal
+            userCart.subTotal = userCart?.cartItems?.reduce((total, cartItem) => {
+                return total + (cartItem?.price! * cartItem.quantity);
+            }, 0);
             
-        })
-    };
+            // c. Calculate the shipping cost
+            userCart.shippingCost = userCart?.cartItems?.reduce((total, cartItem) => {
+                return total + (shippingCostPerUnit * cartItem.quantity);
+            }, 0);
+        
+            // d. Calculate the total
+            if(userCart.subTotal !== undefined && userCart.shippingCost !== undefined){
+                userCart.total = userCart.subTotal + userCart.shippingCost
+            };
 
-    const updateCartContents = (cartContents:ICartContents, cartItems:TCartItem[]) => {
-        cartContents.cartItems = cartItems; // Adds an array with the product items in the cart
-        cartContents.total = cartContents.subTotal! + cartContents.shippingCost!; // Adds the total
-        addProductDetailsToCartContent(cartContents.cartItems);
-    }
+            // e. Sets the state to the final useCart data
+            setUserCart(userCart);
 
-    const saveCartToMongoDb = async (cartContents:ICartContents) => {
-        await updateCartContents(cartContents, cartItems);
-        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, cartContents);
-        // setUserCart(response);
+        };
+        
+        //2. Save the userCart to MongoDB
+        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, userCart);
         return response;
     };
-    const getUserCart = async () => {
-        const response = await axios.get(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`);
-        return response;
-    }
+    
 
     const goToCheckout = () => {
         console.log(cartContents);
@@ -103,7 +102,9 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     };
 
     useEffect(() => {
-        saveCartToMongoDb(cartContents);
+        if(userCart) {
+            saveCartToMongoDb(userCart);
+        };
     }, [cartItems]);
 
     return (
@@ -111,26 +112,23 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
             <Offcanvas.Header closeButton>
                 <Offcanvas.Title>Cart</Offcanvas.Title>
             </Offcanvas.Header>
+           
             <Offcanvas.Body>
-                <Stack gap={5}>
-                    {cartItems.map(item => (
-                        <CartItem key={item._id} {...item} />
-                    ))}
-                    { updateShppingCost(cartItems) > 0 && (
-                        <div className="ms-auto fw-bold fs-7 text-muted">{`Shipping Cost: ${updateShppingCost(cartItems) > 0 ? formatCurrency(updateShppingCost(cartItems)) : ""}`}</div>
-                    )}
-                    <div className="ms-auto fw-bold fs-5">Total:{" "}  
-                    {formatCurrency(cartItems.reduce((total, cartItem) => {
-                        const item = allProducts?.allProducts.find(item => item._id === cartItem._id);
-                        cartContents.subTotal = total + (item?.price || 0) * cartItem.quantity;
-                        return total + (item?.price || 0) * cartItem.quantity;
-                        }, 0)
-                        +  updateShppingCost(cartItems))} 
-                    </div>
-                    {cartContents.subTotal > 0 && (
-                        <Button onClick={goToCheckout}>CHECKOUT</Button>
-                    )}
-                </Stack>
+                    <Stack gap={3}>
+                        {cartItems.map(item => (
+                            <CartItem key={item._id} {...item} />
+                        ))}
+                        <div className="ms-auto fw-bold fs-5">
+                            Total{" "}
+                            {formatCurrency(
+                            cartItems.reduce((total, cartItem) => {
+                                const item = allProducts?.allProducts.find(i => i._id === cartItem._id)
+                                return total + (item?.price || 0) * cartItem.quantity
+                            }, 0)
+                            )}
+                        </div>
+                    </Stack>
+
             </Offcanvas.Body>
         </Offcanvas>
     ) 
