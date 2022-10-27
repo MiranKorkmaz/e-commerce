@@ -33,3 +33,20 @@ export interface IProduct {
     category: string;
     pictures: Array<string>;
 }
+
+export interface ICartProductItem {
+    _id?: string, 
+    quantity?: number, 
+    name?: string, 
+    manufacturer?: string, 
+    image?: string
+}
+
+export interface ICartModel {
+    _id?: string;
+    cartItems?:ICartProductItem[];
+    shippingCost: number
+    subTotal: number
+    total: number
+    userId?: string;
+}
