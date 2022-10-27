@@ -154,4 +154,3 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
         </ShoppingCartContext.Provider>
     ) 
 };
-

@@ -20,7 +20,6 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
     // console.log("req.body: ", req.body);
     const { cartItems, shippingCost, subTotal, total, userId } = req.body;
     // loggedUserId = userId
-    console.log(cartItems, shippingCost, subTotal, total, userId);
     res.send(req.body);
     
     try {

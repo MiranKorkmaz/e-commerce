@@ -1,6 +1,6 @@
 import React from "react";
 
-export interface IProductItem {
+export default interface IProductItem {
     _id?: string,
     name: string,
     description: string,
