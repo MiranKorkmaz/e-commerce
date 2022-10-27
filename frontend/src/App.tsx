@@ -5,7 +5,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from 'react-bootstrap';
 import './App.css';
-import IProductItem from "./interfaces/product-item";
+import { IProductItem } from "./interfaces/product-item";
 import Home from './pages/Home';
 import ProductItem from './pages/ProductItem';
 import Header from './components/Header';

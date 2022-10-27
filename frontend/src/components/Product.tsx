@@ -3,7 +3,7 @@ import "../styles/Product.css"
 import { Link } from 'react-router-dom';
 import { AllProductsContext } from "../App";
 import axios from "axios";
-import IProductItem from "../interfaces/product-item";
+import { IProductItem } from "../interfaces/product-item";
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 

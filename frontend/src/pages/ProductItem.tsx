@@ -3,8 +3,8 @@ import { useParams } from 'react-router'
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container } from 'react-bootstrap';
 import { useShoppingCart } from '../context/ShoppingCartContext';
-import IProductItem from '../interfaces/product-item';
 import "../styles/ProductItem.css"
+import { IProductItem } from '../interfaces/product-item';
 
 type HomeProps = {
     allProducts: IProductItem[]
