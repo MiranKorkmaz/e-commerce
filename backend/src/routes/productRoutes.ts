@@ -1,11 +1,13 @@
 import express, { Request, Response } from "express";
-import ProductModel, { loadAllProducts } from "../models/ProductModel";
+import ProductModel from "../models/ProductModel";
 import UserModel from "../models/UserModel";
 
 const productRoutes = express.Router();
 
 productRoutes.get("/", async (req: Request, res: Response) => {
-    res.send(await loadAllProducts())
+    const search = req.query.search || "";
+    const products = await ProductModel.find({ name: { $regex: search, $options: "i" }}).sort({ _id: -1, })
+    res.status(200).json(products)
 });
 
 productRoutes.get("/:id", async (req: Request, res: Response) => {
@@ -19,14 +21,14 @@ productRoutes.get("/:id", async (req: Request, res: Response) => {
       }
 })
 
-productRoutes.get('/category/:category', async (req: Request, res: Response)=> {
+productRoutes.get('/categories', async (req: Request, res: Response)=> {
     const {category} = req.params;
     try {
       let products;
       if (category == "all") {
         products = await ProductModel.find({}).sort({ _id: -1 }).exec();
       } else {
-        products = await ProductModel.find({category}).sort({ _id: -1 }).exec()
+        products = await ProductModel.find({ category }).sort({ _id: -1 }).exec()
       }
       res.status(200).json(products)
     } catch (e: unknown) {

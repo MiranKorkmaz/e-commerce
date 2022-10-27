@@ -28,10 +28,6 @@ const ProductSchema = new Schema({
 
 const ProductModel = model<IProduct>('Product', ProductSchema);
 
-export const loadAllProducts = async () => {
-    return ProductModel.find({}).sort({ _id: -1 }).exec()
-};
-
 export const mongoDbSetUp = async (url: string) => {
     await connect(url)
 }
