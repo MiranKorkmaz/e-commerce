@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from "express";
 import UserModel from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { authMiddleware } from "../services/auth";
 
 const userRoutes = express.Router();
 
@@ -63,7 +64,7 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
   return res.status(400).send({ message: "Invalid Credentials" });
 });
 
-userRoutes.get("/", async (req: Request, res: Response) => {
+userRoutes.get("/", authMiddleware, async (req: Request, res: Response) => {
   try {
     const user = await UserModel.find({});
     res.status(200).json(user);
@@ -72,7 +73,7 @@ userRoutes.get("/", async (req: Request, res: Response) => {
   }
 });
 
-userRoutes.get("/user/:id", async (req: Request, res: Response) => {
+userRoutes.get("/user/:id", authMiddleware, async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const user = await UserModel.findById(id);

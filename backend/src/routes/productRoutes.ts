@@ -5,7 +5,7 @@ import { authMiddleware } from "../services/auth";
 
 const productRoutes = express.Router();
 
-productRoutes.get("/", async (req: Request, res: Response) => {
+productRoutes.get("/", authMiddleware, async (req: Request, res: Response) => {
     const search = req.query.search || "";
     const products = await ProductModel.find({ name: { $regex: search, $options: "i" }}).sort({ _id: -1, })
     res.status(200).json(products)

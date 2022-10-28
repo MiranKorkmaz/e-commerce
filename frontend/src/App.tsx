@@ -18,9 +18,18 @@ import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { UserContext } from './pages/LoginPage';
 
-
-
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/"
+
+axios.interceptors.request.use((config) => {
+  if (!config.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("backend3-ecom");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
 const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
