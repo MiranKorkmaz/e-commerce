@@ -9,6 +9,7 @@
         .main-product-image {
             border-radius: 20px;
             margin-bottom: 30px;
+            object-fit: scale-down;
         }
         .container--thumbnails {
             display: flex;
@@ -18,8 +19,11 @@
         }
             .thumbnail {
                 max-width: 200px;
-                height: auto;
+                height: 200px;
                 border-radius: 20px;
+            }
+            .thumbnail:hover {
+                transform: scale(1.1);
             }
         .container--product-item-details {
 
