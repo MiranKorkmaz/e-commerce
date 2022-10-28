@@ -1,27 +1,34 @@
-import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
+import jwt from "jsonwebtoken"
+import { Request, Response, NextFunction } from "express"
 
-// const JWT_SECRET = process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv";
+const JWT_SECRET = process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv"
 
-export const authUser = async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.header("authorization")?.split(" ")[1];
-
-    console.log(token);
-
-    if (token) {
-        try {
-            const decoded = jwt.verify(token, "klöasjdfgjf3q4itjiasv") 
-            req.body.user = decoded;
-            console.log(`AUTH FILE req.dody.user = decoded: ${JSON.stringify(decoded)}`);
-            next();
-        } catch (error) {
-            res.status(401).json({ message: "Invalid token" });
-        }
-    } else {
-        res.status(401).json({ message: "No token" });
-    }
+export type JwtPayload = {
+  username: string | undefined
+  userid: string | undefined
+}
+export interface JwtRequest<T> extends Request<T> {
+  jwt?: JwtPayload
 }
 
+export function createJwtToken(payload: JwtPayload) {
+  const token: string = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" })
+  return token
+}
 
-     
+export const authenticateJwtTokenMiddleware = (req: JwtRequest<string>, res: Response, next: NextFunction) => {
+  const authHeader: string | undefined = req.header("Authorization")
+  if (authHeader) {
+    const token = authHeader.split(" ")[1]
+    if (token) {
+      const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload
+      req.jwt = decoded
+    } else {
+      return res.sendStatus(400) // bad token
+    }
+  } else {
+    return res.sendStatus(401) // missing header
+  }
+  next()
+}
+

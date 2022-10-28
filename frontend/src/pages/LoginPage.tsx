@@ -41,6 +41,8 @@ export const LoginPage = () => {
     useEffect(() => {
        if (userId) {
         navigate(`/user/${userId}`)
+    } else {
+        navigate(`/login`)
     }
     }, [navigate, userId])
 

@@ -1,8 +1,7 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import UserModel from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { authUser } from "../services/auth";
 
 const userRoutes = express.Router();
 const JWT_SECRET = process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv";
@@ -86,12 +85,19 @@ userRoutes.get("/", async (req: Request, res: Response) => {
 
 // GET LOGGED IN USER
 userRoutes.get("/user/:id", async (req: Request, res: Response) => {
+// userRoutes.get("/user/", async (req: Request, res: Response) => {
   const { id } = req.params;
-  const user2 = req.body.user;
-  console.log(`USER ROUTES req.dody.user = user2: ${JSON.stringify(user2)}`);
+  // const user2 = req.body.user;
+  // const user2Id = user2.user_id;
+  // console.log(req.body.user);
+  // console.log(`USER ROUTES req.body.user = user2: ${JSON.stringify(user2)}`);
+  // console.log(`USER ROUTES req.body.user.user_id = user2Id: ${JSON.stringify(user2Id)}`);
+  // const user3 = JSON.stringify(user2);
+  // console.log(`USER ROUTES req.body.user = user3: ${JSON.stringify(user3)}`);
   try {
   const user = await UserModel.findById(id)
   res.status(200).json(user);
+  // console.log(`res status user is 200: ${JSON.stringify(user)}`);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -118,6 +124,8 @@ userRoutes.get("/:id/orders", async (req: Request, res: Response) => {
         res.status(400).send(e);
       }
     })
+
+
 
 export default userRoutes;
 
