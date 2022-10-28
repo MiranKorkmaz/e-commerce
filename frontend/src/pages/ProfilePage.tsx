@@ -12,6 +12,7 @@ export const ProfilePage = () => {
   const [loggedUserLastname, setLoggedUserLastname] = useState("")
   const [loggedUserEmail, setLoggedUserEmail] = useState("")
   const [loggedUserDeliveryAdress, setLoggedUserDeliveryAdress] = useState("")
+  const [loggedUserPhone, setLoggedUserPhone] = useState("")
 
   const [userUpdateFirstName, setUserUpdateFirstName] = useState("")
   const [userUpdateLastName, setUserUpdateLastName] = useState("")
@@ -35,6 +36,7 @@ export const ProfilePage = () => {
       setLoggedUserLastname(response.data.lastName)
       setLoggedUserEmail(response.data.email)
       setLoggedUserDeliveryAdress(response.data.deliveryAdress)
+      setLoggedUserPhone(response.data.phone)
     }
     catch (error) {
       console.log(error)
@@ -57,7 +59,8 @@ export const ProfilePage = () => {
         firstName: userUpdateFirstName ? userUpdateFirstName : loggedUserFirstname,
         lastName: userUpdateLastName ? userUpdateLastName : loggedUserLastname,
         email: userUpdateEmail ? userUpdateEmail : loggedUserEmail,
-        deliveryAdress: userUpdateAdress ? userUpdateAdress : loggedUserDeliveryAdress
+        deliveryAdress: userUpdateAdress ? userUpdateAdress : loggedUserDeliveryAdress,
+        phone: userUpdatePhone ? userUpdatePhone : loggedUserPhone
       }, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -97,7 +100,7 @@ export const ProfilePage = () => {
                     <h4>Last name: <i>{loggedUserLastname}</i></h4>
                     <h4>Email: <i>{loggedUserEmail}</i></h4>
                     <h4>Delivery adress: <i>{loggedUserDeliveryAdress}</i></h4>
-                    <h4>Token: <i>{token}</i></h4>
+                    <h4>Phone: <i>{loggedUserPhone}</i></h4>
                     <br />
 
                     <button onClick={handleLogout}>Log out</button>
