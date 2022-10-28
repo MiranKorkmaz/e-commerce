@@ -9,7 +9,7 @@ const userRoutes = express.Router();
 // NEW USER SIGNUP
 userRoutes.post("/signup", async (req: Request, res: Response) => {
   try {
-  const { firstName, lastName, email, password, phone, deliveryAdress } = req.body;
+  const { firstName, lastName, email, password, phone, address } = req.body;
 
   if (!(email && password && firstName && lastName)) {
     res.status(400).send("All input is required");
@@ -20,7 +20,7 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
     const user = await UserModel.create({
       firstName,
       lastName,
-      deliveryAdress,
+      address,
       phone,
       email: email.toLowerCase(),
       password: encryptedUserPassword,

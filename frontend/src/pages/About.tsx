@@ -23,7 +23,7 @@ const About = () => {
         <h4>Zamir Cohen</h4>
         <h4>Miran Korkmaz</h4>
         {loggedUser ? (
-              <h4>Panos Papopilpopopopulusniotis</h4>
+              <h4>Panagiotis Tsapanidis</h4>
               ) : (
               <p></p>
             )}

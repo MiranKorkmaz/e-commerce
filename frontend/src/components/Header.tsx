@@ -20,7 +20,7 @@ const Header = () => {
     } else {
       setLoggedUser(false)
     }
-  }, 1000)
+  }, 500)
   }, [])
 
 

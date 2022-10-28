@@ -11,13 +11,13 @@ export const ProfilePage = () => {
   const [loggedUserFirstname, setLoggedUserFirstname] = useState("")
   const [loggedUserLastname, setLoggedUserLastname] = useState("")
   const [loggedUserEmail, setLoggedUserEmail] = useState("")
-  const [loggedUserDeliveryAdress, setLoggedUserDeliveryAdress] = useState("")
+  const [loggedUserAddress, setLoggedUserAddress] = useState("")
   const [loggedUserPhone, setLoggedUserPhone] = useState("")
 
   const [userUpdateFirstName, setUserUpdateFirstName] = useState("")
   const [userUpdateLastName, setUserUpdateLastName] = useState("")
   const [userUpdateEmail, setUserUpdateEmail] = useState<string>("");
-  const [userUpdateAdress, setUserUpdateAdress] = useState<string>("");
+  const [userUpdateAddress, setUserUpdateAddress] = useState<string>("");
   const [userUpdatePhone, setUserUpdatePhone] = useState<string>("");
 
   const { id } = useParams()
@@ -52,7 +52,7 @@ export const ProfilePage = () => {
       setLoggedUserFirstname(response.data.firstName)
       setLoggedUserLastname(response.data.lastName)
       setLoggedUserEmail(response.data.email)
-      setLoggedUserDeliveryAdress(response.data.deliveryAdress)
+      setLoggedUserAddress(response.data.address)
       setLoggedUserPhone(response.data.phone)
     }
     catch (error) {
@@ -61,7 +61,7 @@ export const ProfilePage = () => {
   }
 
   const handleLogout = () => {
-    setLoggedUserDeliveryAdress("")
+    setLoggedUserAddress("")
     setLoggedUserEmail("")
     setLoggedUserFirstname("")
     setLoggedUserLastname("")
@@ -76,7 +76,7 @@ export const ProfilePage = () => {
         firstName: userUpdateFirstName ? userUpdateFirstName : loggedUserFirstname,
         lastName: userUpdateLastName ? userUpdateLastName : loggedUserLastname,
         email: userUpdateEmail ? userUpdateEmail : loggedUserEmail,
-        deliveryAdress: userUpdateAdress ? userUpdateAdress : loggedUserDeliveryAdress,
+        address: userUpdateAddress ? userUpdateAddress : loggedUserAddress,
         phone: userUpdatePhone ? userUpdatePhone : loggedUserPhone
       }, {
         headers: {
@@ -115,7 +115,7 @@ export const ProfilePage = () => {
                     <h4>First name: <i>{loggedUserFirstname}</i></h4>
                     <h4>Last name: <i>{loggedUserLastname}</i></h4>
                     <h4>Email: <i>{loggedUserEmail}</i></h4>
-                    <h4>Delivery adress: <i>{loggedUserDeliveryAdress}</i></h4>
+                    <h4>Delivery adress: <i>{loggedUserAddress}</i></h4>
                     <h4>Phone: <i>{loggedUserPhone}</i></h4>
                     <br />
 
@@ -148,7 +148,7 @@ export const ProfilePage = () => {
                 <br />
                 <Form.Group id="deliveryAdress">
                     <Form.Label>Delivery Adress</Form.Label>
-                    <Form.Control type="text" value={userUpdateAdress} onChange={(e: { target: { value: React.SetStateAction<string> } }) => setUserUpdateAdress(e.target.value)} />
+                    <Form.Control type="text" value={userUpdateAddress} onChange={(e: { target: { value: React.SetStateAction<string> } }) => setUserUpdateAddress(e.target.value)} />
                 </Form.Group>
                 <br />
                 <Form.Group id="email">
