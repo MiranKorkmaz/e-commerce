@@ -4,9 +4,22 @@ export interface IUser extends Document {
     lastName: string;
     email: string;
     password: string;
-    cart: ICart
+    deliveryAdress: string;
+    cart: ICart;
     orders: IOrders[];
+    token: string;
 }
+
+// export interface IUser {
+//     firstName: string;
+//     lastName: string;
+//     email: string;
+//     password: string;
+//     cart: ICart;
+//     orders: IOrders[];
+//     token: string;
+// }
+
 
 export interface ICart {
     total: number;

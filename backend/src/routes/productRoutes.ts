@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import ProductModel from "../models/ProductModel";
 import UserModel from "../models/UserModel";
+import { authMiddleware } from "../services/auth";
 
 const productRoutes = express.Router();
 
@@ -14,15 +15,15 @@ productRoutes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         const product = await ProductModel.findById(id);
-        // const similar = await ProductModel.find({category: product.category}).limit(5);
         res.status(200).json({product})
       } catch {
         res.status(400);
       }
 })
 
-productRoutes.get('/categories', async (req: Request, res: Response)=> {
+productRoutes.get('/products?category=:category', async (req: Request, res: Response) => {
     const {category} = req.params;
+
     try {
       let products;
       if (category == "all") {

@@ -30,7 +30,6 @@ export const Product = () => {
         handleFilters(newChecked)
     }
     useEffect(() => {
-        // console.log(filters);
     }, [filters]);
 
     return (
@@ -45,7 +44,7 @@ export const Product = () => {
                             name={category}
                             checked={checked.indexOf(category) === -1 ? false : true}
                         />
-                        <label htmlFor={category}>{category}</label>
+                        <label className="category-label" htmlFor={category}>{category}</label>
                         </div>
                 ))}
                 </div>

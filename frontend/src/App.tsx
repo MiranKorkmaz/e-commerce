@@ -1,5 +1,5 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState, createContext, useMemo } from 'react';
+import React, { useEffect, useState, createContext, useMemo, useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import { Container } from 'react-bootstrap';
@@ -14,6 +14,10 @@ import { IAllProductsContext, ICartContents, IUserCartContextValue } from "./int
 
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import { SignupPage } from './pages/SignupPage';
+import { LoginPage } from './pages/LoginPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { UserContext } from './pages/LoginPage';
+
 
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/"
@@ -26,62 +30,65 @@ export const UserCartContext = createContext<IUserCartContextValue>({
     cartItems: [],
     subTotal: 0,
     shippingCost: 0,
-    total:  0,
+    total: 0,
     userId: "",
   },
   setUserCart: () => {},
 });
 
-
 function App() {
+  // Fetch User Cart with axios and set it as the Context's initial value
+  const [userCart, setUserCart] = useState<ICartContents>();
+  const [search, setSearch] = useState("");
 
-// Fetch User Cart with axios and set it as the Context's initial value
-const [userCart, setUserCart] = useState<ICartContents>();
-const [search, setSearch] = useState("")
+  const UserCartContextValue: IUserCartContextValue = useMemo(
+    () => ({ userCart, setUserCart }),
+    [userCart]
+  );
 
-const UserCartContextValue:IUserCartContextValue = useMemo(
-  () => ({userCart, setUserCart}),
-  [userCart]
-)
+  const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
 
-const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
+  const AllProductsContextValue: IAllProductsContext = {
+    allProducts: allProducts,
+  };
 
-const AllProductsContextValue: IAllProductsContext = {
-  allProducts: allProducts
-}
+  const fetchAllProducts = async () => {
+    const response = await axios.get(`/products/?search=${search}`);
+    setAllProducts(response.data);
+    if (loggedInUser) await fetchUserCart();
+  };
 
-const fetchAllProducts = async () => {
-    const response = await axios.get(`/products/?search=${search}`)
-  setAllProducts(response.data);
-  if(loggedInUser) await fetchUserCart();
-};
+  // Fetch specific user's cart data
+  let loggedInUser: string | undefined;
+  loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
+  const fetchUserCart = async () => {
+    const response = await axios.get(`/cart/${loggedInUser}`);
+    await setUserCart(response.data.userCart);
+  };
 
-// Fetch specific user's cart data
-let loggedInUser: string | undefined
-loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
-const fetchUserCart = async () => {
-  const response = await axios.get(`/cart/${loggedInUser}`);
-  await setUserCart(response.data.userCart);
-};
-
-useEffect(() => {
+  useEffect(() => {
     // fetchUserCart();
     fetchAllProducts();
   }, [search]);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>
-
       <UserCartContext.Provider value={UserCartContextValue}>
         <ShoppingCartProvider>
           <Container className="mb-4">
-              <Header />
-              <Routes>
-                <Route path='/' element={<Home setSearch={setSearch}/>}/>
-                <Route path='/about' element={<About />}/>
-                <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
-                <Route path='/signup' element={<SignupPage />}/> 
-              </Routes>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Home setSearch={setSearch} />} />
+              <Route path="/about" element={<About />} />
+              <Route
+                path="/:id"
+                element={<ProductItem allProducts={allProducts} />}
+              />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/user/:id" element={<ProfilePage />} />
+              <Route path="*" element={<h1>404 - Not Found</h1>} />
+            </Routes>
           </Container>
         </ShoppingCartProvider>
       </UserCartContext.Provider>
@@ -89,5 +96,5 @@ useEffect(() => {
   );
 }
 
-export {AllProductsContext};
+export { AllProductsContext };
 export default App;
