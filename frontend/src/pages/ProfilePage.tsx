@@ -114,7 +114,7 @@ export const ProfilePage = () => {
               Email: <i>{loggedUserEmail}</i>
             </h4>
             <h4>
-              Delivery adress: <i>{loggedUserAddress}</i>
+              Address: <i>{loggedUserAddress}</i>
             </h4>
             <h4>
               Phone: <i>{loggedUserPhone}</i>
