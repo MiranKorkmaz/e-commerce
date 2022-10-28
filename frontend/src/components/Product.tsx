@@ -30,7 +30,7 @@ export const Product = () => {
         handleFilters(newChecked)
     }
     useEffect(() => {
-        console.log(filters);
+        // console.log(filters);
     }, [filters]);
 
     return (

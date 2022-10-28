@@ -17,7 +17,6 @@ const mockUserData = {
 // Create Cart
 cartRoutes.post("/:id", async (req: Request, res: Response) => {
     JSON.stringify(req.body);
-    // console.log("req.body: ", req.body);
     const { cartItems, shippingCost, subTotal, total, userId } = req.body;
     // loggedUserId = userId
     res.send(req.body);
@@ -27,7 +26,6 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
         
         // check if cart with this user id already exists, update the current one 
         if(cart) {
-            console.log("entered if")
             cart.cartItems = cartItems;
             cart.shippingCost = shippingCost;
             cart.subTotal = subTotal;
@@ -38,7 +36,6 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
         }
         else {
             // if cart with the logged in user's id doesn't exist, create a new one
-            console.log("entered else")
             const newCart = await CartModel.create({
                 cartItems, shippingCost, subTotal, total, userId, 
             })
@@ -62,7 +59,6 @@ cartRoutes.post("/:id", async (req: Request, res: Response) => {
 // Get User Cart
 cartRoutes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(id);
     try {
         const userCart = await CartModel.findOne({userId: id}).exec();   
         res.status(200).json({userCart});
