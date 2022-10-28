@@ -73,33 +73,47 @@ userRoutes.get("/", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-userRoutes.get("/user/:id", authMiddleware, async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await UserModel.findById(id);
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+userRoutes.get(
+  "/user/:id",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const user = await UserModel.findById(id);
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
   }
-});
+);
 
-userRoutes.put("/user/:id", async (req: Request, res: Response) => {
-  const { id } = req.params;
-  try {
-    const user = await UserModel.findByIdAndUpdate(id, req.body, { new: true });
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ message: "Something went wrong" });
+userRoutes.put(
+  "/user/:id",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const user = await UserModel.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Something went wrong" });
+    }
   }
-});
+);
 
-userRoutes.get("/:id/orders", async (req: Request, res: Response) => {
-  try {
-    const user = await UserModel.findById(req.params.id).populate("orders");
-    res.json(user?.orders);
-  } catch (e) {
-    res.status(400).send(e);
+userRoutes.get(
+  "/:id/orders",
+  authMiddleware,
+  async (req: Request, res: Response) => {
+    try {
+      const user = await UserModel.findById(req.params.id).populate("orders");
+      res.json(user?.orders);
+    } catch (e) {
+      res.status(400).send(e);
+    }
   }
-});
+);
 
 export default userRoutes;
