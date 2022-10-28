@@ -1,41 +1,32 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import jsonwebtoken from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw";
+const JWT_SECRET = "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw";
 
-export type TokenPayload = {
-  user_id: string;
-  email: string;
+export type tokenPayload = {
+  user: string;
+  userId: string;
 };
 
-export interface JwtRequest<T> extends Request<T> {
-  jwt? : TokenPayload;
+export interface JwtReq<T> extends Request<T> {
+  jsonToken?: tokenPayload;
 }
 
-export const authMiddleware = (
-  req: JwtRequest<any>,
+export const authMiddleware = async (
+  req: JwtReq<any>,
   res: Response,
   next: NextFunction
 ) => {
-  const authHeader = req.header("authorization")?.split(" ")[1];
-
-  if (authHeader) {
+  const token: string | undefined = req.header("authorization")?.split(" ")[1];
+  if (token) {
     try {
-      const token = authHeader;
-      const payload = jsonwebtoken.verify(token, JWT_SECRET) as TokenPayload;
-      req.jwt = payload;
-      next();
-    } catch (error) {
-      res.status(401).send({ message: "Invalid token" });
+      const decoded = jwt.verify(token, JWT_SECRET) as tokenPayload;
+      req.jsonToken = decoded;
+    } catch {
+      return res.sendStatus(403);
     }
   } else {
-    res.status(401).send({ message: "No token" });
+    return res.sendStatus(401);
   }
+  next();
 };
-  
-
-export const generateAccessToken = (payload: TokenPayload) => {
-  return jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: "1h" });
-}
-
