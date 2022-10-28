@@ -1,32 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Button, Offcanvas, Stack } from "react-bootstrap";
+import { useNavigate, NavLink } from "react-router-dom";
+import { Button, Offcanvas, Stack, Nav, Navbar } from "react-bootstrap";
 import { AllProductsContext, UserCartContext } from "../App";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
+import { TCartItem, ICartContents } from "../interfaces/product-item"
 
 type TShoppingCartProps = {
     isOpen: boolean
-}
-
-type TCartItem = {
-    _id: string
-    quantity: number
-    name?: string
-    manufacturer?: string
-    image?: string
-    price?: number
-    weight?: number
-};
-interface ICartContents {
-    _id?: string
-    cartItems?: TCartItem[]
-    subTotal?: number
-    shippingCost?: number
-    total?: number
-    userId?: string
 }
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
@@ -90,14 +73,13 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
         };
         
-        //2. Save the userCart to MongoDB
+        //2. Save the userCart to MongoDB (Add condition "if user is logged in" when login is finished)
         const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, userCart);
         return response;
     };
     
 
     const goToCheckout = () => {
-        console.log(cartContents);
         navigate("/checkout");
     };
 
@@ -128,7 +110,11 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                             )}
                         </div>
                     </Stack>
-
+                
+                {/* I can add this button after completing the Login functionality */}
+                {/* <Nav className='me-auto' style={{marginTop: "50px"}}>
+                    <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
+                </Nav> */}
             </Offcanvas.Body>
         </Offcanvas>
     ) 
