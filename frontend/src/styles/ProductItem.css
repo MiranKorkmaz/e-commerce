@@ -21,6 +21,9 @@
                 height: auto;
                 border-radius: 20px;
             }
+            .thumbnail:hover {
+                transform: scale(1.1);
+            }
         .container--product-item-details {
 
         }
