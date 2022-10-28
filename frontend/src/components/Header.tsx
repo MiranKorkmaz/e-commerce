@@ -3,11 +3,19 @@ import { NavLink, useParams } from 'react-router-dom'
 import { Button, Container, Nav, Navbar as NavbarBs } from "react-bootstrap";
 import { useShoppingCart } from '../context/ShoppingCartContext'
 import "../styles/Header.css"
-import axios from 'axios';
+// import axios from 'axios';
 
 const Header = () => {
+  const [loggedUser, setLoggedUser] = useState(false)
   const { openCart, cartQuantity } = useShoppingCart();
   const { id } = useParams()
+  const token = localStorage.getItem("backend3-ecom")
+
+  // setLoggedUser(token ? true : false)
+
+  useEffect(() => {
+    setLoggedUser(token ? true : false)
+  }, [token])
 
 
   return (
@@ -18,7 +26,11 @@ const Header = () => {
             <Nav.Link to="/about" as={ NavLink }>ABOUT</Nav.Link>
             <Nav.Link to="/signup" as={ NavLink }>SIGN UP</Nav.Link>
             <Nav.Link to="/login" as={ NavLink }>LOGIN</Nav.Link>
-            <Nav.Link to={`/user/${id}`} as={ NavLink }>PROFILE</Nav.Link> 
+            {loggedUser ? (
+            <Nav.Link to={`/user/${id}`} as={ NavLink }>PROFILE</Nav.Link>   
+               ) : (
+            <div></div>  
+              )}
           </Nav>
           <Button onClick={openCart} style={{width: "3rem", height: "3rem"}} >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart2" viewBox="0 0 16 16">
