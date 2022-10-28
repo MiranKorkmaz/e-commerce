@@ -46,7 +46,7 @@ input[type=checkbox]{
     margin: 20px;
 }
 
-label {
+.category-label {
     box-sizing: border-box;
     width: 150px;
     background-color: #5597c2;

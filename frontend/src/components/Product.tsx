@@ -2,10 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import "../styles/Product.css"
 import { Link } from 'react-router-dom';
 import { AllProductsContext } from "../App";
-import axios from "axios";
-import { IProductItem } from "../interfaces/product-item";
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
 export const Product = () => {
     const allProducts = useContext(AllProductsContext);
@@ -34,7 +30,6 @@ export const Product = () => {
         handleFilters(newChecked)
     }
     useEffect(() => {
-        // console.log(filters);
     }, [filters]);
 
     return (
@@ -49,7 +44,7 @@ export const Product = () => {
                             name={category}
                             checked={checked.indexOf(category) === -1 ? false : true}
                         />
-                        <label htmlFor={category}>{category}</label>
+                        <label className="category-label" htmlFor={category}>{category}</label>
                         </div>
                 ))}
                 </div>

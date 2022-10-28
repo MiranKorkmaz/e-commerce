@@ -5,7 +5,7 @@ import axios from "axios";
 import { Container } from 'react-bootstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import './App.css';
-import { IProductItem } from "./interfaces/product-item";
+import IProductItem from "./interfaces/product-item";
 import Home from './pages/Home';
 import ProductItem from './pages/ProductItem';
 import Header from './components/Header';
@@ -30,72 +30,71 @@ export const UserCartContext = createContext<IUserCartContextValue>({
     cartItems: [],
     subTotal: 0,
     shippingCost: 0,
-    total:  0,
+    total: 0,
     userId: "",
   },
   setUserCart: () => {},
 });
 
-
 function App() {
+  // Fetch User Cart with axios and set it as the Context's initial value
+  const [userCart, setUserCart] = useState<ICartContents>();
+  const [search, setSearch] = useState("");
 
-// Fetch User Cart with axios and set it as the Context's initial value
-const [userCart, setUserCart] = useState<ICartContents>();
-const [search, setSearch] = useState("")
+  const UserCartContextValue: IUserCartContextValue = useMemo(
+    () => ({ userCart, setUserCart }),
+    [userCart]
+  );
 
-const UserCartContextValue:IUserCartContextValue = useMemo(
-  () => ({userCart, setUserCart}),
-  [userCart]
-)
+  const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
 
-const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
+  const AllProductsContextValue: IAllProductsContext = {
+    allProducts: allProducts,
+  };
 
-const AllProductsContextValue: IAllProductsContext = {
-  allProducts: allProducts
-}
+  const fetchAllProducts = async () => {
+    const response = await axios.get(`/products/?search=${search}`);
+    setAllProducts(response.data);
+    if (loggedInUser) await fetchUserCart();
+  };
 
-const fetchAllProducts = async () => {
-    const response = await axios.get(`/products/?search=${search}`)
-  setAllProducts(response.data);
-  if(loggedInUser) await fetchUserCart();
-};
+  // Fetch specific user's cart data
+  let loggedInUser: string | undefined;
+  loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
+  const fetchUserCart = async () => {
+    const response = await axios.get(`/cart/${loggedInUser}`);
+    await setUserCart(response.data.userCart);
+  };
 
-// Fetch specific user's cart data
-let loggedInUser: string | undefined
-loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
-const fetchUserCart = async () => {
-  const response = await axios.get(`/cart/${loggedInUser}`);
-  await setUserCart(response.data.userCart);
-};
-
-useEffect(() => {
+  useEffect(() => {
     // fetchUserCart();
     fetchAllProducts();
   }, [search]);
 
   return (
     <AllProductsContext.Provider value={AllProductsContextValue}>
-      <ShoppingCartProvider>
-        <UserContext.Provider value={user}>
-        <Container className="mb-4">
-          <Router>
+      <UserCartContext.Provider value={UserCartContextValue}>
+        <ShoppingCartProvider>
+          <Container className="mb-4">
             <Header />
             <Routes>
-              <Route path='/' element={<Home />}/>
-              <Route path='/about' element={<About />}/>
-              <Route path='/:id' element={<ProductItem allProducts={allProducts}/>}/>
-              <Route path='/signup' element={<SignupPage />}/> 
-              <Route path='/login' element={<LoginPage /> }/>
-              <Route path='/user/:id' element={<ProfilePage />} />
-              <Route path='*' element={<h1>404 - Not Found</h1>}/>
+              <Route path="/" element={<Home setSearch={setSearch} />} />
+              <Route path="/about" element={<About />} />
+              <Route
+                path="/:id"
+                element={<ProductItem allProducts={allProducts} />}
+              />
+              <Route path="/signup" element={<SignupPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/user/:id" element={<ProfilePage />} />
+              <Route path="*" element={<h1>404 - Not Found</h1>} />
             </Routes>
-          </Router>
-        </Container>
-        </UserContext.Provider>
-      </ShoppingCartProvider>
+          </Container>
+        </ShoppingCartProvider>
+      </UserCartContext.Provider>
     </AllProductsContext.Provider>
   );
 }
 
-export {AllProductsContext};
+export { AllProductsContext };
 export default App;
