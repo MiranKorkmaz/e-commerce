@@ -34,13 +34,15 @@ export const ProductByCategory = () => {
 
     return (
         <div className='wrapper--allProducts'>
-            <div className="input-category">
+            <h1 className="header-filter">Filter By Category</h1>
+            <div className="categories">
                 {uniqueCategories && uniqueCategories.map((category, index) => (
-                    <div className="input-label" key={index}>
+                    <div className="categories-div" key={index}>
                         <input
                             onChange={() => handleToggle(category)}
                             id={category}
                             type="checkbox"
+                            className="category-input"
                             name={category}
                             checked={checked.indexOf(category) === -1 ? false : true}
                         />

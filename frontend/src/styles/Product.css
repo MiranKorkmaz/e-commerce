@@ -29,33 +29,31 @@
     width: 100%;
 }
 
-.input-category {
+.categories {
     position: relative;
     display: flex;
     flex-direction: row;
-    font-size: 16px;
-    color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
     justify-content: center;
 }
 
-input[type=checkbox]{
-    display: none;
-}
-
-.input-label {
+.categories-div {
     margin: 20px;
 }
 
 .category-label {
-    box-sizing: border-box;
-    width: 150px;
-    background-color: #5597c2;
-    padding: 15px 20px;
+    position: relative;
     cursor: pointer;
+    font-size: 25px;
+    margin: 10px;
+}
+
+.category-input {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.header-filter {
     text-align: center;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
