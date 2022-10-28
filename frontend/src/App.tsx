@@ -17,6 +17,7 @@ import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { UserContext } from './pages/LoginPage';
+import { ProductByCategory } from './pages/ProductByCategory';
 
 
 
@@ -79,6 +80,7 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={<Home setSearch={setSearch} />} />
+              <Route path="/categories" element={<ProductByCategory /> } />
               <Route path="/about" element={<About />} />
               <Route
                 path="/:id"
