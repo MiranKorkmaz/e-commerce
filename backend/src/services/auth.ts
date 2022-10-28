@@ -1,36 +1,41 @@
-import jwt from "jsonwebtoken"
-import { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
+import jsonwebtoken from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET || "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw"
+const JWT_SECRET = process.env.JWT_SECRET || "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw";
 
-export type JwtPayload = {
-  email: string | undefined
-  _id: string | undefined
-}
+export type TokenPayload = {
+  user_id: string;
+  email: string;
+};
+
 export interface JwtRequest<T> extends Request<T> {
-  jwt?: JwtPayload
+  jwt? : TokenPayload;
 }
 
-export function createJwtToken(payload: JwtPayload) {
-  const token: string = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" })
-  return token
-}
+export const authMiddleware = (
+  req: JwtRequest<any>,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.header("authorization")?.split(" ")[1];
 
-export const authenticateJwtTokenMiddleware = async (req: JwtRequest<string>, res: Response, next: NextFunction) => {
-  const authHeader: string | undefined = req.header("authorization")
   if (authHeader) {
-    const token = authHeader.split(" ")[1]
-    console.log("token", token)
-    if (token) {
-      const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload
-      console.log("decoded", decoded)
-      req.jwt = decoded
-    } else {
-      return res.sendStatus(400) // bad token
+    try {
+      const token = authHeader;
+      const payload = jsonwebtoken.verify(token, JWT_SECRET) as TokenPayload;
+      req.jwt = payload;
+      next();
+    } catch (error) {
+      res.status(401).send({ message: "Invalid token" });
     }
   } else {
-    return res.sendStatus(401) // missing header
+    res.status(401).send({ message: "No token" });
   }
-  next()
+};
+  
+
+export const generateAccessToken = (payload: TokenPayload) => {
+  return jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: "1h" });
 }
 

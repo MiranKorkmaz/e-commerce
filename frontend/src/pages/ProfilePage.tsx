@@ -100,15 +100,11 @@ export const ProfilePage = () => {
   }, [])
 
 
-
-
   return (
     <div>
             {!loggedUserEmail ? (
               <div>
               <h1>You are not logged in</h1>
-              <h2>TOKEN: {token}</h2>
-              <h2>LOGGED USER EMAIL: {loggedUserEmail}</h2>
               <button onClick={handleLogout}>Log out</button>
             </div>
               ) : (
