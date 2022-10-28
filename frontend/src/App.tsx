@@ -19,20 +19,6 @@ import { UserContext } from './pages/LoginPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000"
 
-// ERIK INTERCEPTOR FOR AUTHORIZATION
-axios.interceptors.request.use((config) => {
-  if (!config?.headers) {
-    config.headers = {};
-  }
-  const jwt = localStorage.getItem("jwt");
-  if (jwt) {
-    config.headers["authorization"] = `Bearer ${jwt}`;
-  }
-  return config;
-});
-// ERIK INTERCEPTOR
-
-
 interface IAllProductsContext {
   allProducts: IProductItem[] 
 }
@@ -41,14 +27,11 @@ const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
 function App() {
   const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
-
   const AllProductsContextValue: IAllProductsContext = {
     allProducts: allProducts
   }
-
   const user = useContext (UserContext);
 
-  // Fetches all products from /products
   const fetchAllProducts = async () => {
     const response = await axios.get("/products");
     setAllProducts(response.data);
