@@ -1,16 +1,22 @@
-import React from "react";
-import Product from '../components/Product';
-import Categories from '../components/Categories';
+import { useContext } from 'react';
+import { AllProductsContext } from '../App';
+import { Product } from '../components/Product';
+import { ISearch } from '../interfaces/product-item';
 
-const Home = () => {
+const Home = ({ setSearch }: ISearch) => {
+    const allProducts = useContext(AllProductsContext);
 
-  return (
-    <div>
-        <h1>Home</h1>
-        <Product />
-        <Categories />
-    </div>
-  )
+    return (
+        <div>
+            <input
+                type="text"
+                className="product-search"
+                placeholder="Search product"
+                onChange={({ currentTarget: input }) => setSearch(input.value)}
+            />
+            <Product />
+        </div>
+    )
 }
 
 export default Home
