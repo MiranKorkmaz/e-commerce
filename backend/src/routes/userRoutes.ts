@@ -55,7 +55,7 @@ userRoutes.post("/login", async (req: Request, res: Response) => {
       { user_id: user._id, email },
       process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv",
       {
-        expiresIn: "1h",
+        expiresIn: 1000,
       }
     );
     user.token = token;
