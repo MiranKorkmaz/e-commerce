@@ -4,12 +4,12 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userRoutes = express.Router();
-const JWT_SECRET = process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv";
+// const JWT_SECRET = process.env.JWT_SECRET || "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw";
 
 // NEW USER SIGNUP
 userRoutes.post("/signup", async (req: Request, res: Response) => {
   try {
-  const { firstName, lastName, email, password, deliveryAdress } = req.body;
+  const { firstName, lastName, email, password, phone, deliveryAdress } = req.body;
 
   if (!(email && password && firstName && lastName)) {
     res.status(400).send("All input is required");
@@ -21,6 +21,7 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
       firstName,
       lastName,
       deliveryAdress,
+      phone,
       email: email.toLowerCase(),
       password: encryptedUserPassword,
     });
@@ -28,7 +29,7 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
     // Create token
     const token = jwt.sign(
       { user_id: user._id, email },
-        process.env.TOKEN_KEY || "klöasjdfgjf3q4itjiasv",
+        process.env.JWT_SECRET || "0823uoiwehfFusTKLciadfsbaasd2346sdfbjaenrw",
       {
         expiresIn: "1h",
       }
