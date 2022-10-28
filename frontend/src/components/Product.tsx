@@ -55,11 +55,6 @@ export const Product = () => {
                         <br />
                         <Link to={`/${product._id}`}>{product.name}</Link>
                         <p><strong>Price:</strong> ${product.price}</p>
-                        <p><strong>Manufacturer:</strong> {product.manufacturer}</p>
-                        <p><strong>Weight:</strong> {product.weight} gr.</p>
-                        <p><strong>Category:</strong> {product.category}</p>
-                        <p className='description'><strong>Description:</strong> {product.description}</p>
-
                     </div>
                 ))}
                 {filters.length > 0 && filters.map((category: string) => (
@@ -71,9 +66,6 @@ export const Product = () => {
                                     <br />
                                     <Link to={`/${product._id}`}>{product.name}</Link>
                                     <p><strong>Price:</strong> ${product.price}</p>
-                                    <p><strong>Manufacturer:</strong> {product.manufacturer}</p>
-                                    <p><strong>Weight:</strong> {product.weight} gr.</p>
-                                    <p><strong>Category:</strong> {product.category}</p>
                                     <p className='description'><strong>Description:</strong> {product.description}</p>
                                 </div>
                             )
