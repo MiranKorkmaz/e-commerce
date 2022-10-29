@@ -1,26 +1,46 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState, createContext, useMemo, useContext } from 'react';
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useMemo,
+  useContext,
+} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
-import { Container } from 'react-bootstrap';
+import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './App.css';
+import "./App.css";
 import IProductItem from "./interfaces/product-item";
-import Home from './pages/Home';
-import ProductItem from './pages/ProductItem';
-import Header from './components/Header';
-import About from './pages/About';
-import { IAllProductsContext, ICartContents, IUserCartContextValue } from "./interfaces/product-item"
+import Home from "./pages/Home";
+import ProductItem from "./pages/ProductItem";
+import Header from "./components/Header";
+import About from "./pages/About";
+import {
+  IAllProductsContext,
+  ICartContents,
+  IUserCartContextValue,
+} from "./interfaces/product-item";
 
-import { ShoppingCartProvider } from './context/ShoppingCartContext';
-import { SignupPage } from './pages/SignupPage';
-import { LoginPage } from './pages/LoginPage';
-import { ProfilePage } from './pages/ProfilePage';
-import { UserContext } from './pages/LoginPage';
+import { ShoppingCartProvider } from "./context/ShoppingCartContext";
+import { SignupPage } from "./pages/SignupPage";
+import { LoginPage } from "./pages/LoginPage";
+import { ProfilePage } from "./pages/ProfilePage";
+import { UserContext } from "./pages/LoginPage";
 
+axios.defaults.baseURL =
+  process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/";
 
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/"
+axios.interceptors.request.use((config) => {
+  if (!config.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("backend3-ecom");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
 const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
