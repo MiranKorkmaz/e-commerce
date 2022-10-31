@@ -85,7 +85,6 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     };
 
     useEffect(() => {
-        console.log("userCart: ", userCart)
         if(userCart) {
             saveCartToMongoDb(userCart);
         };

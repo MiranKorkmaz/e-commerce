@@ -3,11 +3,10 @@ import axios from 'axios';
 import { ShoppingCart } from '../components/ShoppingCart';
 import { TShoppingCartProviderProps, TCartItemArray, ICartContents } from "../interfaces/product-item";
 
-// What are the children we need to have in the Provider?
 type ShoppingCartContext = {
     openCart: () => void
     closeCart: () => void
-    getItemQuantity: (_id: string) => number //Searches for a product by _id in our cart and returns its quantity
+    getItemQuantity: (_id: string) => number 
     increaseCartQuantity: (_id: string) => void
     decreaseCartQuantity: (_id: string) => void
     removeFromCart: (_id: string) => void
@@ -25,16 +24,14 @@ export function useShoppingCart() {
 export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     const [isOpen, setIsOpen] = useState(false);
     
-    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); // this is where all of our cart information is stored
+    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); 
 
     // Fetch specific user's cart data
-    // loggedInUser = "mock-user-id" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
     // const loggedUserId = undefined
     const loggedUserId = "635f6abcf0b7386ffbfb4720";
     
     const fetchUserCart = async (loggedUserId:string | undefined) => {
         if(loggedUserId === undefined) {
-            console.log("loggedUserId is undefined: ", loggedUserId);
             return
         }
         else {
@@ -47,8 +44,6 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
         const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`, {userId: loggedUserId, cartItems: [], shippingCost: 0, subTotal: 0, total:0 });
         return response;
     }
-
-    
 
     // For each item in cartItems, take the item and its quantity and return a total quantity
     const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0);
