@@ -55,14 +55,14 @@ function App() {
   const fetchAllProducts = async () => {
     const response = await axios.get(`/products/?search=${search}`);
     setAllProducts(response.data);
-    if (loggedInUser) await fetchUserCart();
+    if (loggedUserId) await fetchUserCart();
   };
 
   // Fetch specific user's cart data
-  let loggedInUser: string | undefined;
-  loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
+  // const loggedUserId = undefined
+    const loggedUserId = "635f6abcf0b7386ffbfb4720"
   const fetchUserCart = async () => {
-    const response = await axios.get(`/cart/${loggedInUser}`);
+    const response = await axios.get(`/cart/${loggedUserId}`);
     await setUserCart(response.data.userCart);
   };
 
