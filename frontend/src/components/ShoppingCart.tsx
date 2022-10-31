@@ -80,6 +80,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     
 
     const goToCheckout = () => {
+        closeCart();
         navigate("/checkout");
     };
 
