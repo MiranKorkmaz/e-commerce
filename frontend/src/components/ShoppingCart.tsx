@@ -84,6 +84,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     };
 
     useEffect(() => {
+        console.log("userCart: ", userCart)
         if(userCart) {
             saveCartToMongoDb(userCart);
         };
@@ -109,12 +110,18 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                             }, 0)
                             )}
                         </div>
+                        {cartContents.subTotal && cartContents?.subTotal > 0 && cartItems.length > 0 ? (
+                        <Button onClick={goToCheckout}>GO TO CHECKOUT</Button>
+                        ) : ""}
                     </Stack>
                 
                 {/* I can add this button after completing the Login functionality */}
-                {/* <Nav className='me-auto' style={{marginTop: "50px"}}>
-                    <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
-                </Nav> */}
+                {userCart === undefined && (
+                        <Nav className='me-auto' style={{marginTop: "50px"}}>
+                            <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
+                        </Nav>
+                    )
+                }
             </Offcanvas.Body>
         </Offcanvas>
     ) 
