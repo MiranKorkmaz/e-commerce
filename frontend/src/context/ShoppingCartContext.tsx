@@ -1,7 +1,7 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ShoppingCart } from '../components/ShoppingCart';
-import { TShoppingCartProviderProps, TCartItemArray } from "../interfaces/product-item";
+import { TShoppingCartProviderProps, TCartItemArray, ICartContents } from "../interfaces/product-item";
 
 // What are the children we need to have in the Provider?
 type ShoppingCartContext = {
@@ -28,15 +28,27 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); // this is where all of our cart information is stored
 
     // Fetch specific user's cart data
-    let loggedInUser:string | undefined = undefined
-    loggedInUser = "mock-user-id" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
+    // loggedInUser = "mock-user-id" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
+    // const loggedUserId = undefined
+    const loggedUserId = "635f6abcf0b7386ffbfb4720";
     
-    let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
-    
-    const fetchUserCart = async () => {
-        const response = await axios.get(`${url}`);
-        await setCartItems(response.data.userCart.cartItems);
+    const fetchUserCart = async (loggedUserId:string | undefined) => {
+        if(loggedUserId === undefined) {
+            console.log("loggedUserId is undefined: ", loggedUserId);
+            return
+        }
+        else {
+            createNewCart(loggedUserId);
+        }
     };
+
+    const createNewCart = async (loggedUserId:string | undefined) => {
+        let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`
+        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`, {userId: loggedUserId, cartItems: [], shippingCost: 0, subTotal: 0, total:0 });
+        return response;
+    }
+
+    
 
     // For each item in cartItems, take the item and its quantity and return a total quantity
     const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0);
@@ -98,10 +110,10 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     };
 
     useEffect(() => {
-        if(loggedInUser) {
-            fetchUserCart();
+        if(loggedUserId) {
+            fetchUserCart(loggedUserId);
         }
-    }, []);
+    }, [loggedUserId]);
 
     return (
         <ShoppingCartContext.Provider value={{
