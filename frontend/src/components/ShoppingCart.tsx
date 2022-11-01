@@ -13,12 +13,13 @@ type TShoppingCartProps = {
 }
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
+    let loggedInUser: string | undefined = undefined;
+    // loggedInUser = "635f6abcf0b7386ffbfb4720"; // Enable when we have completed login functionality
+    loggedInUser = "635bd0a8618ceb8d3629be8d" // Has User, no User Cart
     const navigate = useNavigate();
     const allProducts = useContext(AllProductsContext);
     
     const { closeCart, cartItems } = useShoppingCart();
-
-    
 
     // User Cart Context
     const {userCart, setUserCart} = useContext(UserCartContext);
@@ -79,45 +80,18 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
         const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${cartContents.userId}`, userCart);
         return response;
     };
-
-    // const loggedUserId = undefined
-    const loggedUserId = "635bd0a8618ceb8d3629be8d" // Has User, Has userCart already
-    // const loggedUserId = "635f6abcf0b7386ffbfb4720"; // Has User, Doesn't have a cart
-
-    // Fetch specific user's cart data
-    const fetchUserCart = async (loggedUserId:string) => {
-
-        const response = await axios.get(`/cart/${loggedUserId}`);
-        console.log("response: ", response);
-
-        if(response.data.userCart) {
-            console.log("User exists and userCart exists: ", response.data.userCart);
-            // await setUserCart(response.data.userCart);
-            console.log("userCart: ", userCart);
-        }
-        
-        if(response.data.userCart == null) {
-            console.log("User exists, but User Cart doesn't exist: ", response.data.userCart);
-            console.log("userCart: ", userCart);
-        }
-
-    };
     
 
     const goToCheckout = () => {
         closeCart();
-        navigate("/checkout");
+        navigate("/order");
     };
 
     useEffect(() => {
-        if(loggedUserId) fetchUserCart(loggedUserId);
-        
-        // if(userCart) {
-            // console.log("userCart: ", userCart);
-            // saveCartToMongoDb(userCart);
-        // };
-
-    }, [cartItems, loggedUserId]);
+        if(userCart) {
+            saveCartToMongoDb(userCart);
+        };
+    }, [cartItems]);
 
     return (
         <Offcanvas show={isOpen} onHide={closeCart} placement="end">
@@ -139,18 +113,18 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                             }, 0)
                             )}
                         </div>
-                        {loggedUserId && cartItems.length > 0 ? (
+                        {cartContents.subTotal && cartContents?.subTotal > 0 && cartItems.length > 0 ? (
                         <Button onClick={goToCheckout}>GO TO CHECKOUT</Button>
                         ) : ""}
                     </Stack>
+                    
+                    {!loggedInUser && (
+                            <Nav className='me-auto' style={{marginTop: "50px"}}>
+                                <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
+                            </Nav>
+                        )
+                    }
                 
-                {/* I can add this button after completing the Login functionality */}
-                {!loggedUserId && (
-                        <Nav className='me-auto' style={{marginTop: "50px"}}>
-                            <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
-                        </Nav>
-                    )
-                }
             </Offcanvas.Body>
         </Offcanvas>
     ) 
