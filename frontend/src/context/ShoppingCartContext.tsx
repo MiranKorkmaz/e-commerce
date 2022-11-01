@@ -24,26 +24,37 @@ export function useShoppingCart() {
 export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     const [isOpen, setIsOpen] = useState(false);
     
-    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); 
+    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); // this is where all of our cart information is stored
 
     // Fetch specific user's cart data
-    // const loggedUserId = undefined
-    const loggedUserId = "635f6abcf0b7386ffbfb4720";
+    let loggedInUser:string | undefined = undefined
+    loggedInUser = "635f6abcf0b7386ffbfb4720" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
+    loggedInUser = "635bd0a8618ceb8d3629be8d" // Has User, no User Cart
     
-    const fetchUserCart = async (loggedUserId:string | undefined) => {
-        if(loggedUserId === undefined) {
-            return
+    let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
+
+    const createNewUserCart = async (userId:string | undefined) => {   
+        console.log("entered createNewUserCart()");
+        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${userId}`, {userId});
+        return response;
+    };
+    
+    const fetchUserCart = async () => {
+        console.log("entered fetchUserCart()");
+        const response = await axios.get(`${url}`);
+        if(!response.data.userCart){
+            console.log("response is null", response.data.userCart)
+            createNewUserCart(loggedInUser);
+            
+        }
+        else if(loggedInUser && !response.data.userCart) {
+            createNewUserCart(loggedInUser);
         }
         else {
-            createNewCart(loggedUserId);
+            console.log("response is not null")
+            await setCartItems(response.data.userCart.cartItems);
         }
     };
-
-    const createNewCart = async (loggedUserId:string | undefined) => {
-        let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`
-        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`, {userId: loggedUserId, cartItems: [], shippingCost: 0, subTotal: 0, total:0 });
-        return response;
-    }
 
     // For each item in cartItems, take the item and its quantity and return a total quantity
     const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0);
@@ -105,10 +116,10 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     };
 
     useEffect(() => {
-        if(loggedUserId) {
-            fetchUserCart(loggedUserId);
+        if(loggedInUser) {
+            fetchUserCart();
         }
-    }, [loggedUserId]);
+    }, []);
 
     return (
         <ShoppingCartContext.Provider value={{
