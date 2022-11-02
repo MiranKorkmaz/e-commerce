@@ -34,6 +34,7 @@ orderRoutes.post('/', async (req: Request, res: Response) => {
     try {
         const { owner, products, address, total, count, date, status, shippingCost } = req.body;
         const order = JSON.stringify({ owner, products, address, total, count, date, status, shippingCost });
+
         if (order) {
             const orders = await OrderModel.create({ 
                 owner,
@@ -56,10 +57,23 @@ orderRoutes.post('/', async (req: Request, res: Response) => {
 })
 
 
+// delete order
+orderRoutes.delete('/:id', async (req: Request, res: Response) => {
+    const { id } = req.params;
+    console.log(`Delete id: ${id}`)	
+    try {
+        const order = await OrderModel.findOne({id}).remove();
+        res.status(200).json(order)
+    } catch (e) {
+        res.status(400).json(e)
+    }
+})
+
+
 // get orders
 orderRoutes.get('/', async (req: Request, res: Response)=> {
     try {
-      const orders = await OrderModel.find().populate('owner', ['email', 'firstName', 'lastName']);
+      const orders = await OrderModel.find({});
       res.status(200).json(orders);
     } catch (e) {
       res.status(400).json(e)
