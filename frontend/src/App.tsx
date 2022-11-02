@@ -26,6 +26,7 @@ import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ProductByCategory } from './pages/ProductByCategory';
+import { CheckoutPage } from "./pages/CheckoutPage";
 
 
 axios.defaults.baseURL =
@@ -121,6 +122,7 @@ function App() {
                             <Route path="/signup" element={<SignupPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/user/:id" element={<ProfilePage />} />
+                            <Route path="checkout" element={<CheckoutPage />} />
                             <Route path="*" element={<h1>404 - Not Found</h1>} />
                         </Routes>
                     </Container>
