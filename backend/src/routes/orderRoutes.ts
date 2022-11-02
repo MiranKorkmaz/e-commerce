@@ -39,7 +39,7 @@ orderRoutes.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     console.log(`Delete id: ${id}`)	
     try {
-        const order = await OrderModel.findOne({id}).remove();
+        const order = await OrderModel.deleteOne({id});
         res.status(200).json(order)
     } catch (e) {
         res.status(400).json(e)
@@ -48,13 +48,14 @@ orderRoutes.delete('/:id', async (req: Request, res: Response) => {
 
 
 // get orders
-orderRoutes.get('/', async (req: Request, res: Response)=> {
-    try {
-      const orders = await OrderModel.find({});
-      res.status(200).json(orders);
-    } catch (e) {
+orderRoutes.get('/:id', async (req: Request, res: Response)=> {
+  const { id } = req.params;
+  try {
+      const order = await OrderModel.findOne({id});
+      res.status(200).json(order)
+  } catch (e) {
       res.status(400).json(e)
-    }
-  })
+  }
+})
 
 export default orderRoutes;

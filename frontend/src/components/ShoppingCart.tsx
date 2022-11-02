@@ -100,7 +100,8 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
         console.log("GOT INTO HANDLE ORDER 2");
         setOrder(data);
-        // navigate("/orders");
+        navigate("/orders");
+        window.location.reload();
     };
  
 

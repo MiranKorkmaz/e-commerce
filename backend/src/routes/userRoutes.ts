@@ -91,7 +91,7 @@ userRoutes.get(
 
 userRoutes.put(
   "/user/:id",
-  authMiddleware,
+  // authMiddleware,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     try {

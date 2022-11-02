@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 
 export default interface IProductItem {
+    quantity: ReactNode;
     _id?: string,
     name: string,
     description: string,
