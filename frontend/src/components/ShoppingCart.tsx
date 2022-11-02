@@ -6,13 +6,16 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
-import { TCartItem, ICartContents } from "../interfaces/product-item"
+import { ICartContents } from "../interfaces/product-item"
 
 type TShoppingCartProps = {
     isOpen: boolean
 }
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
+    let loggedInUser: string | undefined = undefined;
+    loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
+    // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
     const navigate = useNavigate();
     const allProducts = useContext(AllProductsContext);
     
@@ -81,7 +84,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
     const goToCheckout = () => {
         closeCart();
-        navigate("/checkout");
+        navigate("/order");
     };
 
     useEffect(() => {
@@ -114,14 +117,14 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                         <Button onClick={goToCheckout}>GO TO CHECKOUT</Button>
                         ) : ""}
                     </Stack>
+                    
+                    {!loggedInUser && (
+                            <Nav className='me-auto' style={{marginTop: "50px"}}>
+                                <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
+                            </Nav>
+                        )
+                    }
                 
-                {/* I can add this button after completing the Login functionality */}
-                {userCart === undefined && (
-                        <Nav className='me-auto' style={{marginTop: "50px"}}>
-                            <Nav.Link to="/signup" as={ NavLink } onClick={closeCart} style={{fontSize: "1rem"}} >Log in or Register to Save Your Cart Contents</Nav.Link>
-                        </Nav>
-                    )
-                }
             </Offcanvas.Body>
         </Offcanvas>
     ) 

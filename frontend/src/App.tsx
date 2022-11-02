@@ -75,14 +75,15 @@ function App() {
   const fetchAllProducts = async () => {
     const response = await axios.get(`/products/?search=${search}`);
     setAllProducts(response.data);
-    if (loggedUserId) await fetchUserCart();
+    if (loggedInUser) await fetchUserCart();
   };
 
   // Fetch specific user's cart data
-  // const loggedUserId = undefined
-    const loggedUserId = "635f6abcf0b7386ffbfb4720"
+  let loggedInUser: string | undefined = undefined;
+  loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
+  // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
   const fetchUserCart = async () => {
-    const response = await axios.get(`/cart/${loggedUserId}`);
+    const response = await axios.get(`/cart/${loggedInUser}`);
     await setUserCart(response.data.userCart);
   };
 
