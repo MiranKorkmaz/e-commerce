@@ -80,8 +80,8 @@ function App() {
 
   // Fetch specific user's cart data
   let loggedInUser: string | undefined = undefined;
-  // loggedInUser = "635f6abcf0b7386ffbfb4720"; // Enable when we have completed login functionality
-  loggedInUser = "635bd0a8618ceb8d3629be8d" // Has User, no User Cart
+  loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
+  // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
   const fetchUserCart = async () => {
     const response = await axios.get(`/cart/${loggedInUser}`);
     await setUserCart(response.data.userCart);
