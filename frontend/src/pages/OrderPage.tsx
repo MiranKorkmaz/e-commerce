@@ -17,6 +17,7 @@ export const OrderPage = () => {
   const [shippingCost, setShippingCost] = useState(0);
   const [status, setStatus] = useState("");
   const [address, setAddress] = useState("");
+  const [total, setTotal] = useState(0);
   
   let loggedUserId: string | undefined = undefined;
 
@@ -55,6 +56,7 @@ export const OrderPage = () => {
           setProducts(response.data.products);
           setShippingCost(response.data.shippingCost);
           setStatus(response.data.status);
+          setTotal(response.data.total);
         } catch (error) {
           console.log(error);
         }
@@ -97,6 +99,7 @@ export const OrderPage = () => {
               <li>
               <h3>{product.name} x {product.quantity}</h3>
               <p>${product.price} per item </p>
+              <p>TOTAL: ${(Number(product.quantity) * product.price)}</p>
               </li>
             </div>
           ))}

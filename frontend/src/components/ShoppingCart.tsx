@@ -7,6 +7,7 @@ import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
 import { ICartContents } from "../interfaces/product-item"
+import { response } from "express";
 
 type TShoppingCartProps = {
     isOpen: boolean
@@ -89,7 +90,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
            owner: loggedUserId,
            status: "pending",
            shippingCost: 3,
-           total: 0,
+           total: cartContents.total,
            count: 0,
            date: new Date(),
            address: loggedUserId,
