@@ -28,13 +28,12 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
 
     // Fetch specific user's cart data
     let loggedInUser:string | undefined = undefined
-    loggedInUser = "635f6abcf0b7386ffbfb4720" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
-    loggedInUser = "635bd0a8618ceb8d3629be8d" // Has User, no User Cart
+    loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
+    // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
     
     let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
 
     const createNewUserCart = async (userId:string | undefined) => {   
-        console.log("entered createNewUserCart()");
         const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${userId}`, {userId});
         return response;
     };
@@ -43,15 +42,13 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
         console.log("entered fetchUserCart()");
         const response = await axios.get(`${url}`);
         if(!response.data.userCart){
-            console.log("response is null", response.data.userCart)
             createNewUserCart(loggedInUser);
             
         }
-        else if(loggedInUser && !response.data.userCart) {
+        else if(loggedInUser && !response.data.userCart.cartItems) {
             createNewUserCart(loggedInUser);
         }
         else {
-            console.log("response is not null")
             await setCartItems(response.data.userCart.cartItems);
         }
     };
