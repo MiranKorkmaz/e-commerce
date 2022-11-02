@@ -15,7 +15,6 @@ export const OrderPage = () => {
   const [products, setProducts] = useState<IProductItem[]>([]);
   const [owner, setOwner] = useState("");
   const [shippingCost, setShippingCost] = useState(0);
-  const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
   const [address, setAddress] = useState("");
   
@@ -39,7 +38,7 @@ export const OrderPage = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-          setOwner(response.data.firstName);
+          setOwner(`${response.data.firstName} ${response.data.lastName}`);
           setAddress(response.data.address);
         } catch (error) {
           console.log(error);
@@ -55,7 +54,6 @@ export const OrderPage = () => {
           });
           setProducts(response.data.products);
           setShippingCost(response.data.shippingCost);
-          setTotal(response.data.total);
           setStatus(response.data.status);
         } catch (error) {
           console.log(error);
@@ -104,9 +102,8 @@ export const OrderPage = () => {
           ))}
           </>
           <br />
-          <p>Owner: {owner}</p>
-          <p>Shipping Cost: {shippingCost}</p>
-          <p>Total: {total}</p>
+          <p>Customer: {owner}</p>
+          <p>Shipping Cost: ${shippingCost}</p>
           <p>Status: {status}</p>
           <p>Address: {address}</p>
     </div>

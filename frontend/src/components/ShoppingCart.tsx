@@ -88,7 +88,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
            products: cartItems,
            owner: loggedUserId,
            status: "pending",
-           shippingCost: 0,
+           shippingCost: 3,
            total: 0,
            count: 0,
            date: new Date(),
