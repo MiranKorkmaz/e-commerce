@@ -82,9 +82,6 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
     const handleOrder = async () => {
 
-        console.log("GOT INTO HANDLE ORDER 1");
-        console.log(`loggedUserId: ${loggedUserId}`);
-
         await axios.delete("orders/" + loggedUserId);
 
         const { data } = await axios.post("/orders", {

@@ -17,7 +17,6 @@ export const OrderPage = () => {
   const [shippingCost, setShippingCost] = useState(0);
   const [total, setTotal] = useState(0);
   const [status, setStatus] = useState("");
-  const [count, setCount] = useState(0);
   const [address, setAddress] = useState("");
   
   let loggedUserId: string | undefined = undefined;
@@ -32,9 +31,6 @@ export const OrderPage = () => {
   
         loggedUserId = decodeJWT(token).user_id;
       }
-
-      console.log(`loggedUserId);`, loggedUserId);
-      console.log(`token);`, token);
 
       const getUser = async () => {
         try {
@@ -61,7 +57,6 @@ export const OrderPage = () => {
           setShippingCost(response.data.shippingCost);
           setTotal(response.data.total);
           setStatus(response.data.status);
-          setCount(response.data.count);
         } catch (error) {
           console.log(error);
         }
@@ -102,7 +97,7 @@ export const OrderPage = () => {
           Products: {products.map((product) => (
             <div key={product._id}>
               <li>
-              <h3>{product.name} x </h3>
+              <h3>{product.name} x {product.quantity}</h3>
               <p>${product.price} per item </p>
               </li>
             </div>
@@ -113,7 +108,6 @@ export const OrderPage = () => {
           <p>Shipping Cost: {shippingCost}</p>
           <p>Total: {total}</p>
           <p>Status: {status}</p>
-          <p>Count: {count}</p>
           <p>Address: {address}</p>
     </div>
     <button>BUY</button>
