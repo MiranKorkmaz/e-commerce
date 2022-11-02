@@ -20,14 +20,18 @@ export const ProfilePage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("backend3-ecom");
+  let loggedUserId: string | undefined = undefined;
 
-  const decodeJWT = (token: any) => {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace("-", "+").replace("_", "/");
-    return JSON.parse(window.atob(base64));
-  };
-  const loggedUserId = decodeJWT(token).user_id;
+  const token = localStorage.getItem("backend3-ecom");
+  if (token) {
+    const decodeJWT = (token: string) => {
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace("-", "+").replace("_", "/");
+        return JSON.parse(window.atob(base64));
+      };
+    loggedUserId = decodeJWT(token).user_id;
+
+  }
 
   const getUser = async () => {
     try {
@@ -90,7 +94,7 @@ export const ProfilePage = () => {
     } else {
       navigate("/login");
     }
-  }, []);
+  }, [token]);
 
   return (
     <div>
