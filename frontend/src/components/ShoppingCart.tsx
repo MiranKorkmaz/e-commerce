@@ -31,6 +31,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     const { closeCart, cartItems } = useShoppingCart();
     const { userCart, setUserCart } = useContext(UserCartContext);
 
+    
     let shippingCostPerUnit: number = 3;
 
     const cartContents: ICartContents = {
@@ -72,10 +73,44 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
         return response;
     };
 
+    // ORDER *********************************************************************
+
+    axios.defaults.baseURL =
+    process.env.REACT_APP_SERVER_PORT || "http://localhost:4000";
+    
+    const [order, setOrder] = useState([]);
+
+    const handleOrder = async () => {
+
+        console.log("GOT INTO HANDLE ORDER 1");
+
+        const { data } = await axios.post("/orders", {
+           products: cartItems,
+           owner: loggedUserId,
+           status: "pending",
+           shippingCost: 0,
+           total: 0,
+           count: 0,
+           date: new Date(),
+           address: loggedUserId,
+        });
+
+        console.log("GOT INTO HANDLE ORDER 2");
+        setOrder(data);
+        // navigate("/orders");
+    };
+ 
+
+    //*************************************************************************** */
+
+
+
 
     const goToCheckout = () => {
+        handleOrder();
+        console.log("GOT INTO GO TO CHECKOUT");
         closeCart();
-        navigate("/order");
+        navigate("/orders");
     };
 
     useEffect(() => {

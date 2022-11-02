@@ -36,8 +36,8 @@ const Header = () => {
           {conditionalDisplay() ? (
             <><Nav.Link to={`/user/${id}`} as={NavLink}>
               PROFILE
-            </Nav.Link><Nav.Link to={"/checkout"} as={NavLink}>
-                CHECKOUT
+            </Nav.Link><Nav.Link to={"/orders"} as={NavLink}>
+              ORDER
               </Nav.Link></>
           ) : (
             <p></p>

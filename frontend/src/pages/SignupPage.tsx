@@ -12,7 +12,7 @@ export const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [deliveryAdress, setDeliveryAdress] = useState("");
+  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [signUp, setSignUp] = useState({});
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export const SignupPage = () => {
       firstName: firstName,
       lastName: lastName,
       phone: phone,
-      deliveryAdress: deliveryAdress,
+      address: address,
     });
     setSignUp(data);
   };
@@ -88,14 +88,14 @@ export const SignupPage = () => {
               />
             </Form.Group>
             <br />
-            <Form.Group id="deliveryAdress">
+            <Form.Group id="address">
               <Form.Label>Delivery Adress</Form.Label>
               <Form.Control
                 type="text"
-                value={deliveryAdress}
+                value={address}
                 onChange={(e: {
                   target: { value: React.SetStateAction<string> };
-                }) => setDeliveryAdress(e.target.value)}
+                }) => setAddress(e.target.value)}
               />
             </Form.Group>
             <br />
