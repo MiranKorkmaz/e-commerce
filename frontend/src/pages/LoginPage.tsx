@@ -38,6 +38,7 @@ export const LoginPage = () => {
   useEffect(() => {
     if (userId) {
       navigate(`/user/${userId}`);
+      window.location.reload();
     } else {
       navigate(`/login`);
     }
