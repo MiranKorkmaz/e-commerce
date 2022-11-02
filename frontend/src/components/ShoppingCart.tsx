@@ -6,7 +6,7 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
-import { TCartItem, ICartContents } from "../interfaces/product-item"
+import { ICartContents } from "../interfaces/product-item"
 
 type TShoppingCartProps = {
     isOpen: boolean
@@ -14,8 +14,8 @@ type TShoppingCartProps = {
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     let loggedInUser: string | undefined = undefined;
-    // loggedInUser = "635f6abcf0b7386ffbfb4720"; // Enable when we have completed login functionality
-    loggedInUser = "635bd0a8618ceb8d3629be8d" // Has User, no User Cart
+    loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
+    // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
     const navigate = useNavigate();
     const allProducts = useContext(AllProductsContext);
     
