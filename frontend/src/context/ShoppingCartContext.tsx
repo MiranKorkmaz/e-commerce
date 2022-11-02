@@ -1,13 +1,12 @@
 import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ShoppingCart } from '../components/ShoppingCart';
-import { TShoppingCartProviderProps, TCartItemArray } from "../interfaces/product-item";
+import { TShoppingCartProviderProps, TCartItemArray, ICartContents } from "../interfaces/product-item";
 
-// What are the children we need to have in the Provider?
 type ShoppingCartContext = {
     openCart: () => void
     closeCart: () => void
-    getItemQuantity: (_id: string) => number //Searches for a product by _id in our cart and returns its quantity
+    getItemQuantity: (_id: string) => number 
     increaseCartQuantity: (_id: string) => void
     decreaseCartQuantity: (_id: string) => void
     removeFromCart: (_id: string) => void
@@ -29,13 +28,29 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
 
     // Fetch specific user's cart data
     let loggedInUser:string | undefined = undefined
-    loggedInUser = "mock-user-id" // Enable when we have completed login functionality - Sets the username attached to the Cart to the logged-in user's username
+    loggedInUser = "6357bc05b61a410bf051a2c2"; // Has User, Has User Cart
+    // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
     
     let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedInUser}`
+
+    const createNewUserCart = async (userId:string | undefined) => {   
+        const response:ICartContents = await axios.post(`${process.env.REACT_APP_SERVER_PORT}/cart/${userId}`, {userId});
+        return response;
+    };
     
     const fetchUserCart = async () => {
+        console.log("entered fetchUserCart()");
         const response = await axios.get(`${url}`);
-        await setCartItems(response.data.userCart.cartItems);
+        if(!response.data.userCart){
+            createNewUserCart(loggedInUser);
+            
+        }
+        else if(loggedInUser && !response.data.userCart.cartItems) {
+            createNewUserCart(loggedInUser);
+        }
+        else {
+            await setCartItems(response.data.userCart.cartItems);
+        }
     };
 
     // For each item in cartItems, take the item and its quantity and return a total quantity

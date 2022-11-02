@@ -17,6 +17,7 @@ const ProductItem = ({allProducts}:HomeProps) => {
     const { getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart();
     const quantity = getItemQuantity(product?._id!);
 
+
     return (
         <Container>
             {product ? (
@@ -26,7 +27,7 @@ const ProductItem = ({allProducts}:HomeProps) => {
                 <img 
                     className='main-product-image' 
                     src={product.pictures[0]} alt={product.name} 
-                    style={{width: "500px", height: "auto", objectFit: "cover"}}
+                    style={{width: "500px", height: "500px", objectFit: "cover"}}
                 />
                 <div className='container--thumbnails'>
                     {product?.pictures.map((image, index) => (
@@ -36,6 +37,10 @@ const ProductItem = ({allProducts}:HomeProps) => {
                             src={image} 
                             alt={`${product.name} ${index}`}
                             style={{width: "150px", height: "auto", objectFit: "cover"}}
+                            onClick={() => { 
+                                const mainImage = document.querySelector('.main-product-image') as HTMLImageElement;
+                                mainImage.src = image;
+                            }}
                         />
                     ))}
                 </div>
@@ -44,6 +49,7 @@ const ProductItem = ({allProducts}:HomeProps) => {
                     <p><strong>Price:</strong> ${product.price}</p>
                     <p><strong>Weight:</strong> {product.weight} gr.</p>
                     <p><strong>Category:</strong> {product.category}</p>
+                    <p><strong>Manufacturer:</strong> {product.manufacturer}</p>
                     <p className='description'><strong>Description:</strong> {product.description}</p>
                 </div>
                 

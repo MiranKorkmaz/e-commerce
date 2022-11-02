@@ -28,13 +28,13 @@ const UserSchema = new Schema({
     type: String,
     required: false,
   },
-  cart: {
-    type: Object,
-    default: {
-      total: 0,
-      count: 0,
-    },
-  },
+  // cart: {
+  //   type: Object,
+  //   default: {
+  //     total: 0,
+  //     count: 0,
+  //   },
+  // },
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Order" }],
   token: { type: String },
 });

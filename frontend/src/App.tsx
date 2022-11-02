@@ -1,16 +1,26 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useState, createContext, useMemo, useContext } from 'react';
+import React, {
+  useEffect,
+  useState,
+  createContext,
+  useMemo,
+  useContext,
+} from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import axios from "axios";
-import { Container } from 'react-bootstrap';
+import { Container } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import './App.css';
+import "./App.css";
 import IProductItem from "./interfaces/product-item";
-import Home from './pages/Home';
-import ProductItem from './pages/ProductItem';
-import Header from './components/Header';
-import About from './pages/About';
-import { IAllProductsContext, ICartContents, IUserCartContextValue } from "./interfaces/product-item"
+import Home from "./pages/Home";
+import ProductItem from "./pages/ProductItem";
+import Header from "./components/Header";
+import About from "./pages/About";
+import {
+  IAllProductsContext,
+  ICartContents,
+  IUserCartContextValue,
+} from "./interfaces/product-item";
 
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import { SignupPage } from './pages/SignupPage';
@@ -20,8 +30,19 @@ import { UserContext } from './pages/LoginPage';
 import { ProductByCategory } from './pages/ProductByCategory';
 
 
+axios.defaults.baseURL =
+  process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/";
 
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/"
+axios.interceptors.request.use((config) => {
+  if (!config.headers) {
+    config.headers = {};
+  }
+  const jwt = localStorage.getItem("backend3-ecom");
+  if (jwt) {
+    config.headers["authorization"] = `Bearer ${jwt}`;
+  }
+  return config;
+});
 
 const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
@@ -60,8 +81,9 @@ function App() {
   };
 
   // Fetch specific user's cart data
-  let loggedInUser: string | undefined;
-  loggedInUser = "mock-user-id"; // Enable when we have completed login functionality
+  let loggedInUser: string | undefined = undefined;
+  loggedInUser = "6357bc05b61a410bf051a2c2"; // Has User, Has User Cart
+  // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
   const fetchUserCart = async () => {
     const response = await axios.get(`/cart/${loggedInUser}`);
     await setUserCart(response.data.userCart);
