@@ -57,6 +57,7 @@ export const ProfilePage = () => {
     setLoggedUserLastname("");
     localStorage.removeItem("backend3-ecom");
     navigate("/");
+    window.location.reload();
   };
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
