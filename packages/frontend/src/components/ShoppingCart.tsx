@@ -1,13 +1,13 @@
 import { useContext, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { Button, Offcanvas, Stack, Nav, Navbar } from "react-bootstrap";
-import { AllProductsContext, UserCartContext } from "../App";
+import { Button, Offcanvas, Stack, Nav } from "react-bootstrap";
 import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
 import { ICartContents } from "../interfaces/cart-item"
 import { TShoppingCartProps } from "../interfaces/cart-item";
+import { AllProductsContext, UserCartContext } from "../App";
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
     const navigate = useNavigate();

@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { Button, Stack } from "react-bootstrap"
 import { useShoppingCart } from "../context/ShoppingCartContext";
-import { AllProductsContext } from "../App";
 import { formatCurrency } from "../utilities/formatCurrency"
 import { TCartItemProps } from "../interfaces/cart-item";
+import { AllProductsContext } from "../App";
 
 export function CartItem({ _id, quantity }: TCartItemProps) {
     const allProducts = useContext(AllProductsContext);
