@@ -1,7 +1,7 @@
-import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { ShoppingCart } from '../components/ShoppingCart';
-import { TShoppingCartProviderProps, TCartItemArray, ICartContents } from "../interfaces/product-item";
+import { TShoppingCartProviderProps, TCartItemArray, ICartContents } from "../interfaces/cart-item";
 
 type ShoppingCartContext = {
     openCart: () => void
@@ -21,8 +21,7 @@ export function useShoppingCart() {
 };
 export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
     const [isOpen, setIsOpen] = useState(false);
-
-    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]); // this is where all of our cart information is stored
+    const [cartItems, setCartItems] = useState<TCartItemArray[]>([]);
 
     let loggedUserId: string | undefined = undefined;
 
@@ -49,7 +48,6 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
         const response = await axios.get(`${url}`);
         if (!response.data.userCart) {
             createNewUserCart(loggedUserId);
-
         }
         else if (loggedUserId && !response.data.userCart.cartItems) {
             createNewUserCart(loggedUserId);
@@ -59,30 +57,25 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
         }
     };
 
-    // For each item in cartItems, take the item and its quantity and return a total quantity
     const cartQuantity = cartItems.reduce((quantity, item) => item.quantity + quantity, 0);
 
     const openCart = () => setIsOpen(true);
     const closeCart = () => setIsOpen(false);
 
     function getItemQuantity(_id: string) {
-        return cartItems.find(item => item._id === _id)?.quantity || 0; // if this evaluates to something, get the quantity, if we have nothing, return 0
+        return cartItems.find(item => item._id === _id)?.quantity || 0;
     };
 
     function increaseCartQuantity(_id: string) {
         setCartItems(currItems => {
-            // if the item doesn't already exist in the cart (null), return an array with existing items and add 1 new item with _id, quantity.
             if (currItems.find(item => item._id === _id) == null) {
                 return [...currItems, { _id, quantity: 1 }]
             }
-            // if the item already exists in the cart, retain the current item and its quantity and increase its quantity by 1.
             else {
                 return currItems.map(item => {
                     if (item._id === _id) {
                         return { ...item, quantity: item.quantity + 1 };
                     }
-
-                    // Return the item without any changes at all
                     else {
                         return item;
                     }
@@ -93,17 +86,14 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
 
     function decreaseCartQuantity(_id: string) {
         setCartItems(currItems => {
-            // if the quantity of the item that we find is 1, remove it
             if (currItems.find(item => item._id === _id)?.quantity === 1) {
-                return currItems.filter(item => item._id !== _id); // return a list of all items except the one we want to remove
+                return currItems.filter(item => item._id !== _id);
             }
-            // if the item already exists in the cart, retain the current item and its quantity and decrease its quantity by 1.
             else {
                 return currItems.map(item => {
                     if (item._id === _id) {
                         return { ...item, quantity: item.quantity - 1 };
                     }
-                    // Return the item without any changes at all
                     else {
                         return item;
                     }

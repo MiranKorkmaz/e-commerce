@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { Button, Offcanvas, Stack, Nav, Navbar } from "react-bootstrap";
 import { AllProductsContext, UserCartContext } from "../App";
@@ -6,14 +6,13 @@ import { useShoppingCart } from "../context/ShoppingCartContext";
 import { CartItem } from "./CartItem";
 import { formatCurrency } from "../utilities/formatCurrency"
 import axios from "axios";
-import { ICartContents } from "../interfaces/product-item"
-import { response } from "express";
-
-type TShoppingCartProps = {
-    isOpen: boolean
-}
+import { ICartContents } from "../interfaces/cart-item"
+import { TShoppingCartProps } from "../interfaces/cart-item";
 
 export function ShoppingCart({ isOpen }: TShoppingCartProps) {
+    const navigate = useNavigate();
+    const allProducts = useContext(AllProductsContext);
+
     let loggedUserId: string | undefined = undefined;
 
     const token = localStorage.getItem("backend3-ecom");
@@ -24,15 +23,11 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
             return JSON.parse(window.atob(base64));
         };
         loggedUserId = decodeJWT(token).user_id;
-
     }
-    const navigate = useNavigate();
-    const allProducts = useContext(AllProductsContext);
 
     const { closeCart, cartItems } = useShoppingCart();
     const { userCart, setUserCart } = useContext(UserCartContext);
 
-    
     let shippingCostPerUnit: number = 3;
 
     const cartContents: ICartContents = {
@@ -74,41 +69,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
         return response;
     };
 
-    // ORDER *********************************************************************
-
-    // axios.defaults.baseURL =
-    // process.env.REACT_APP_SERVER_PORT || "http://localhost:4000";
-    
-    // const [order, setOrder] = useState([]);
-
-    // const handleOrder = async () => {
-
-    //     // await axios.delete("orders/" + loggedUserId);
-
-    //     const { data } = await axios.post("/orders", {
-    //        products: cartItems,
-    //        owner: loggedUserId,
-    //        status: "pending",
-    //        shippingCost: 3,
-    //        total: cartContents.total,
-    //        count: 0,
-    //        date: new Date(),
-    //        address: loggedUserId,
-    //     });
-
-    //     setOrder(data);
-    //     navigate("/orders");
-    //     window.location.reload();
-    // };
- 
-
-    //*************************************************************************** */
-
-
-
-
     const goToCheckout = () => {
-        // handleOrder();
         closeCart();
         navigate("/orders");
     };
@@ -150,8 +111,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
                     </Nav>
                 )
                 }
-
             </Offcanvas.Body>
         </Offcanvas>
     )
-}
+};

@@ -6,7 +6,6 @@ import { AllProductsContext } from "../App";
 export const Product = () => {
     const allProducts = useContext(AllProductsContext);
     return (
-
         <div className='wrapper--allProducts'>
             {allProducts?.allProducts.map((product, index) => {
                 return (
@@ -21,4 +20,4 @@ export const Product = () => {
             )}
         </div>
     )
-}
+};

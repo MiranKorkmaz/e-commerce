@@ -15,12 +15,7 @@ import Home from "./pages/Home";
 import ProductItem from "./pages/ProductItem";
 import Header from "./components/Header";
 import About from "./pages/About";
-import {
-    IAllProductsContext,
-    ICartContents,
-    IUserCartContextValue,
-} from "./interfaces/product-item";
-
+import { IAllProductsContext } from "./interfaces/product-item";
 import { ShoppingCartProvider } from './context/ShoppingCartContext';
 import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
@@ -28,8 +23,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { ProductByCategory } from './pages/ProductByCategory';
 import { OrderPage } from "./pages/OrderPage";
 import { OrdersMadePage } from "./pages/OrdersMadePage";
-import { CartItem } from "./components/CartItem";
-
+import { IUserCartContextValue, ICartContents } from "./interfaces/cart-item";
 
 axios.defaults.baseURL =
     process.env.REACT_APP_SERVER_PORT || "http://localhost:4000/";
@@ -62,13 +56,13 @@ export const UserCartContext = createContext<IUserCartContextValue>({
 function App() {
     const [userCart, setUserCart] = useState<ICartContents>();
     const [search, setSearch] = useState("");
+    const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
+
 
     const UserCartContextValue: IUserCartContextValue = useMemo(
         () => ({ userCart, setUserCart }),
         [userCart]
     );
-
-    const [allProducts, setAllProducts] = useState<IProductItem[]>([]);
 
     const AllProductsContextValue: IAllProductsContext = {
         allProducts: allProducts,
@@ -92,18 +86,12 @@ function App() {
         loggedUserId = decodeJWT(token).user_id;
 
     }
-    console.log(token)
-    // Fetch specific user's cart data
-    //   let loggedInUser: string | undefined = undefined;
-    //   loggedInUser = "635f6abcf0b7386ffbfb4720"; // Has User, Has User Cart
-    // loggedInUser = "6361f5292fa2f26d4df0728a" // Has User, no User Cart
     const fetchUserCart = async () => {
         const response = await axios.get(`/cart/${loggedUserId}`);
         await setUserCart(response.data.userCart);
     };
 
     useEffect(() => {
-        // fetchUserCart();
         fetchAllProducts();
     }, [search, token]);
 

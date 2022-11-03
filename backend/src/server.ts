@@ -1,4 +1,4 @@
-import express, { Application, json, NextFunction, Request, Response, urlencoded } from 'express'
+import express, { Application, json, Request, Response, urlencoded } from 'express'
 import cors from 'cors'
 import dotenv from "dotenv";
 import { mongoDbSetUp } from './models/ProductModel';
@@ -6,7 +6,6 @@ import productRoutes from './routes/productRoutes';
 import userRoutes from './routes/userRoutes';
 import orderRoutes from './routes/orderRoutes';
 import cartRoutes from "./routes/cartRoutes"
-import UserModel from './models/UserModel';
 import bodyParser from "body-parser";
 
 dotenv.config();

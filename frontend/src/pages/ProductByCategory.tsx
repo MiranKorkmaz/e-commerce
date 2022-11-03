@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import "../styles/Product.css"
 import { Link } from 'react-router-dom';
 import { AllProductsContext } from "../App";
@@ -47,9 +47,9 @@ export const ProductByCategory = () => {
                             checked={checked.indexOf(category) === -1 ? false : true}
                         />
                         <label className="category-label" htmlFor={category}>{category}</label>
-                        </div>
+                    </div>
                 ))}
-                </div>
+            </div>
             <div className='container--all-product-items'>
                 {filters.length === 0 && allProducts?.allProducts.map((product, index) => (
                     <div className='container--product-item' key={index}>
