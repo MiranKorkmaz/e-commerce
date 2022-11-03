@@ -50,9 +50,9 @@ export const OrdersMadePage = () => {
 
 
 
-// useEffect(() => {
-//       getOrder();
-// }, []);
+useEffect(() => {
+      getOrder();
+}, []);
 
 
 
@@ -63,7 +63,7 @@ export const OrdersMadePage = () => {
 
         {orders.map((order) => (
           <div key={order._id}>
-            <h2>Order: {order._id}</h2>
+            <h2>Order number: {order._id}</h2>
             
             <p>Products: {order.products.map((product) => (
               <div key={product.name}>
@@ -74,14 +74,13 @@ export const OrdersMadePage = () => {
             ))} </p>
 
             <p>Status: {order.status}</p>
-            <p>Shipping Cost: {order.shippingCost}</p>
-            <p>Total: {order.total}</p>
+            <p>Shipping Cost: ${order.shippingCost}</p>
+            <p>Total: ${order.total}</p>
             <p>Address: {order.address}</p>
             </div>
         ))}
       
       </div>
-      <button onClick={getOrder}></button>
     </div>
   );
 };
