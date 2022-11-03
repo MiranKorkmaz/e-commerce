@@ -34,6 +34,11 @@ export type TCartItem = {
 export type TCartItemArray = {
     _id: string
     quantity: number
+    name?: string
+    manufacturer?: string
+    image?: string
+    price?: number
+    weight?: number;
 };
 
 // This is the type of object that contains username plus an array of TCartItem

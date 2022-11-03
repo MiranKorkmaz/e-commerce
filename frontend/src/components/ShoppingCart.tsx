@@ -76,31 +76,30 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
     // ORDER *********************************************************************
 
-    axios.defaults.baseURL =
-    process.env.REACT_APP_SERVER_PORT || "http://localhost:4000";
+    // axios.defaults.baseURL =
+    // process.env.REACT_APP_SERVER_PORT || "http://localhost:4000";
     
-    const [order, setOrder] = useState([]);
+    // const [order, setOrder] = useState([]);
 
-    const handleOrder = async () => {
+    // const handleOrder = async () => {
 
-        await axios.delete("orders/" + loggedUserId);
+    //     // await axios.delete("orders/" + loggedUserId);
 
-        const { data } = await axios.post("/orders", {
-           products: cartItems,
-           owner: loggedUserId,
-           status: "pending",
-           shippingCost: 3,
-           total: cartContents.total,
-           count: 0,
-           date: new Date(),
-           address: loggedUserId,
-        });
+    //     const { data } = await axios.post("/orders", {
+    //        products: cartItems,
+    //        owner: loggedUserId,
+    //        status: "pending",
+    //        shippingCost: 3,
+    //        total: cartContents.total,
+    //        count: 0,
+    //        date: new Date(),
+    //        address: loggedUserId,
+    //     });
 
-        console.log("GOT INTO HANDLE ORDER 2");
-        setOrder(data);
-        navigate("/orders");
-        window.location.reload();
-    };
+    //     setOrder(data);
+    //     navigate("/orders");
+    //     window.location.reload();
+    // };
  
 
     //*************************************************************************** */
@@ -109,8 +108,7 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
 
     const goToCheckout = () => {
-        handleOrder();
-        console.log("GOT INTO GO TO CHECKOUT");
+        // handleOrder();
         closeCart();
         navigate("/orders");
     };

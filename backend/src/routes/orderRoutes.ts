@@ -5,31 +5,43 @@ import UserModel from "../models/UserModel";
 
 const orderRoutes = express.Router();
 
+// orderRoutes.post('/', async (req: Request, res: Response) => {
+    
+//     try {
+//         const { owner, products, address, total, count, date, status, shippingCost } = req.body;
+//         const order = JSON.stringify({ owner, products, address, total, count, date, status, shippingCost });
+   
+//         if (order) {
+//             const orders = await OrderModel.create({ 
+//                 owner,
+//                 products,
+//                 address,
+//                 total,
+//                 count,
+//                 date,
+//                 status,
+//                 shippingCost,
+//             });
+//             res.status(201).json(orders)
+//         }
+//     } catch (e) {
+//         res.status(400).json(e)
+//     }
+// })
+
+
 orderRoutes.post('/', async (req: Request, res: Response) => {
-    console.log(`req.body in Stringify: ${JSON.stringify(req.body)}`)
-    console.log(`req.body: ${req.body.owner}, ${req.body.owner}, ${req.body.products}, ${req.body.address}`)
+    const { owner, products, address, total, count, date, status, shippingCost  } = req.body;
     try {
-        const { owner, products, address, total, count, date, status, shippingCost } = req.body;
-        const order = JSON.stringify({ owner, products, address, total, count, date, status, shippingCost });
-
-        if (order) {
-            const orders = await OrderModel.create({ 
-                owner,
-                products,
-                address,
-                total,
-                count,
-                date,
-                status,
-                shippingCost,
-            });
-
-            res.status(201).json(orders)
-            console.log("ORDER CREATED")
+        const user = await UserModel.findById(owner);
+        const order = await OrderModel.create({ owner: user?._id, products: products, address, shippingCost, total, count, date, status });
+        await order.save();
+        if (user) {
+            await user.save();
         }
+        res.status(200).json(user)
     } catch (e) {
         res.status(400).json(e)
-        console.log("ORDER CRASHED")
     }
 })
 
@@ -37,9 +49,8 @@ orderRoutes.post('/', async (req: Request, res: Response) => {
 // delete order
 orderRoutes.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(`Delete id: ${id}`)	
     try {
-        const order = await OrderModel.deleteOne({id});
+        const order = await OrderModel.deleteOne({ owner : id });
         res.status(200).json(order)
     } catch (e) {
         res.status(400).json(e)
@@ -48,13 +59,15 @@ orderRoutes.delete('/:id', async (req: Request, res: Response) => {
 
 
 // get orders
-orderRoutes.get('/:id', async (req: Request, res: Response)=> {
+orderRoutes.get('/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-      const order = await OrderModel.findOne({id});
-      res.status(200).json(order)
-  } catch (e) {
-      res.status(400).json(e)
+    //   const order = await OrderModel.findOne({ owner: id });
+      const orders = await OrderModel.find({ owner: id });
+      console.log(orders)
+      res.status(200).json(orders)
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong" });
   }
 })
 

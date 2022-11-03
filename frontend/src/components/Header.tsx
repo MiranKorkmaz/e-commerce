@@ -38,6 +38,9 @@ const Header = () => {
             <Nav.Link to={`/user/${id}`} as={NavLink}>
               PROFILE
             </Nav.Link>
+            <Nav.Link to={`/orders/${id}`} as={NavLink}>
+              ORDERS
+            </Nav.Link>
             </>
           ) : (
             <p></p>
