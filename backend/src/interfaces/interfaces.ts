@@ -1,4 +1,5 @@
-import { Document, Model } from "mongoose";
+import { Document } from "mongoose";
+
 export interface IUser extends Document {
     firstName: string;
     lastName: string;
@@ -9,17 +10,6 @@ export interface IUser extends Document {
     orders: IOrders[];
     token: string;
 }
-
-// export interface IUser {
-//     firstName: string;
-//     lastName: string;
-//     email: string;
-//     password: string;
-//     cart: ICart;
-//     orders: IOrders[];
-//     token: string;
-// }
-
 
 export interface ICart {
     total: number;
@@ -48,16 +38,16 @@ export interface IProduct {
 }
 
 export interface ICartProductItem {
-    _id?: string, 
-    quantity?: number, 
-    name?: string, 
-    manufacturer?: string, 
+    _id?: string,
+    quantity?: number,
+    name?: string,
+    manufacturer?: string,
     image?: string
 }
 
 export interface ICartModel {
     _id?: string;
-    cartItems?:ICartProductItem[];
+    cartItems?: ICartProductItem[];
     shippingCost: number
     subTotal: number
     total: number

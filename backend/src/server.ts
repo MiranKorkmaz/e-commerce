@@ -20,10 +20,10 @@ app.use(cors({
 
 app.use(json())
 app.use(urlencoded({ extended: true }))
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 const port: number = parseInt(process.env.SERVER_PORT || "3001");
-const mongoDbURL: string = process.env.MONGO_URL ||  "mongodb://localhost:27017/";
+const mongoDbURL: string = process.env.MONGO_URL || "mongodb://localhost:27017/";
 
 app.use("/products", productRoutes);
 app.use("/users", userRoutes)
@@ -32,7 +32,7 @@ app.use("/cart", cartRoutes);
 
 app.get('/cors', (_req: Request, res: Response) => {
     res.set('Access-Control-Allow-Origin', '*');
-    })
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)

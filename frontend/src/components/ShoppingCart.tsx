@@ -127,13 +127,13 @@ export function ShoppingCart({ isOpen }: TShoppingCartProps) {
 
             <Offcanvas.Body>
                 <Stack gap={3}>
-                    {cartItems.map(item => (
+                    {cartItems.map((item: JSX.IntrinsicAttributes & { _id: string; quantity: number; }) => (
                         <CartItem key={item._id} {...item} />
                     ))}
                     <div className="ms-auto fw-bold fs-5">
                         Total{" "}
                         {formatCurrency(
-                            cartItems.reduce((total, cartItem) => {
+                            cartItems.reduce((total: number, cartItem: { _id: string | undefined; quantity: number; }) => {
                                 const item = allProducts?.allProducts.find(i => i._id === cartItem._id)
                                 return total + (item?.price || 0) * cartItem.quantity
                             }, 0)
