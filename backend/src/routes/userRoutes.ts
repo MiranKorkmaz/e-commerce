@@ -3,6 +3,7 @@ import UserModel from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { authMiddleware } from "../services/auth";
+import OrderModel from "../models/OrderModel";
 
 const userRoutes = express.Router();
 
@@ -40,6 +41,8 @@ userRoutes.post("/signup", async (req: Request, res: Response) => {
   }
 });
 
+
+
 userRoutes.post("/login", async (req: Request, res: Response) => {
   // try {
   const { email, password, _id } = req.body;
@@ -73,10 +76,7 @@ userRoutes.get("/", authMiddleware, async (req: Request, res: Response) => {
   }
 });
 
-userRoutes.get(
-  "/user/:id",
-  authMiddleware,
-  async (req: Request, res: Response) => {
+userRoutes.get("/user/:id", authMiddleware, async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
       const user = await UserModel.findById(id);
@@ -89,7 +89,7 @@ userRoutes.get(
 
 userRoutes.put(
   "/user/:id",
-  authMiddleware,
+  // authMiddleware,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
@@ -103,17 +103,6 @@ userRoutes.put(
   }
 );
 
-userRoutes.get(
-  "/:id/orders",
-  authMiddleware,
-  async (req: Request, res: Response) => {
-    try {
-      const user = await UserModel.findById(req.params.id).populate("orders");
-      res.json(user?.orders);
-    } catch (e) {
-      res.status(400).send(e);
-    }
-  }
-);
+
 
 export default userRoutes;

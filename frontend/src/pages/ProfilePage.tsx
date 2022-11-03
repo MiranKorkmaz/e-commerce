@@ -30,7 +30,6 @@ export const ProfilePage = () => {
         return JSON.parse(window.atob(base64));
       };
     loggedUserId = decodeJWT(token).user_id;
-
   }
 
   const getUser = async () => {

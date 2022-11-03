@@ -26,6 +26,9 @@ import { SignupPage } from './pages/SignupPage';
 import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { ProductByCategory } from './pages/ProductByCategory';
+import { OrderPage } from "./pages/OrderPage";
+import { OrdersMadePage } from "./pages/OrdersMadePage";
+import { CartItem } from "./components/CartItem";
 
 
 axios.defaults.baseURL =
@@ -46,12 +49,12 @@ const AllProductsContext = createContext<IAllProductsContext | null>(null);
 
 export const UserCartContext = createContext<IUserCartContextValue>({
     userCart: {
-        _id: "hello",
-        cartItems: [],
-        subTotal: 0,
-        shippingCost: 0,
-        total: 0,
+        _id: "",
         userId: "",
+        cartItems: [],
+        total: 0,
+        subTotal: 0,
+        shippingCost: 0
     },
     setUserCart: () => { },
 });
@@ -121,6 +124,8 @@ function App() {
                             <Route path="/signup" element={<SignupPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/user/:id" element={<ProfilePage />} />
+                            <Route path="/orders" element={<OrderPage />} />
+                            <Route path="/orders/:id" element={<OrdersMadePage />} />
                             <Route path="*" element={<h1>404 - Not Found</h1>} />
                         </Routes>
                     </Container>

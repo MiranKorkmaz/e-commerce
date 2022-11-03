@@ -16,15 +16,12 @@ const OrderSchema = new Schema({
   },
   shippingCost: {
     type: Number, 
-    default: 0
   },
   total : {
     type: Number,
-    default: 0
   },
   count: {
     type: Number,
-    default: 0
   },
   date: {
     type: String,
@@ -33,7 +30,7 @@ const OrderSchema = new Schema({
   address: {
     type: String,
   }
-}, {minimize: false});
+}, {minimize: false}) ;
 
 const OrderModel = model<IOrders>('Order', OrderSchema);
 
