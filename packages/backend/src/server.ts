@@ -21,7 +21,7 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(bodyParser.urlencoded({ extended: true }))
 
-const port: number = parseInt(process.env.SERVER_PORT || "3001");
+const port: number = parseInt(process.env.SERVER_PORT || "4000");
 const mongoDbURL: string = process.env.MONGO_URL || "mongodb://localhost:27017";
 
 app.use("/products", productRoutes);
