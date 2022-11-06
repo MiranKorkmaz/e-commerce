@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react'
+import GetToken from '../components/GetToken';
 import { Order } from '../interfaces/order-item';
 
 axios.defaults.baseURL =
@@ -9,16 +10,9 @@ export const OrdersMadePage = () => {
     const [orders, setOrders] = useState<Order[]>([]);
 
     let loggedUserId: string | undefined = undefined;
-
     const token = localStorage.getItem("backend3-ecom");
-    if (token) {
-        const decodeJWT = (token: string) => {
-            const base64Url = token.split(".")[1];
-            const base64 = base64Url.replace("-", "+").replace("_", "/");
-            return JSON.parse(window.atob(base64));
-        };
-        loggedUserId = decodeJWT(token).user_id;
-    }
+    
+    loggedUserId = GetToken().user_id;
 
     const getOrder = async () => {
         const { data } = await axios.get(`/orders/${loggedUserId}`, {

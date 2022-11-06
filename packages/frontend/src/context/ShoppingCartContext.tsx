@@ -33,7 +33,6 @@ export function ShoppingCartProvider({ children }: TShoppingCartProviderProps) {
             return JSON.parse(window.atob(base64));
         };
         loggedUserId = decodeJWT(token).user_id;
-
     }
 
     let url = `${process.env.REACT_APP_SERVER_PORT}/cart/${loggedUserId}`
