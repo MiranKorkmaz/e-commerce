@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "63541f027f66c11fea062401"
+  },
+  "name": "iPhone 14",
+  "description": "Description of iPhone 14 from MongoDB",
+  "price": 995,
+  "manufacturer": "Apple",
+  "weight": 450,
+  "category": "phone",
+  "pictures": [
+    "images/phone.jpg"
+  ]
+},{
+  "_id": {
+    "$oid": "635420497f66c11fea062405"
+  },
+  "name": "Airpods",
+  "description": "These amazing airpods will change your life",
+  "price": 250,
+  "manufacturer": "Apple",
+  "weight": 100,
+  "category": "headphone",
+  "pictures": [
+    "images/airpods.jpg",
+    "images/airpods2.jpeg"
+  ]
+},{
+  "_id": {
+    "$oid": "635420a57f66c11fea062406"
+  },
+  "name": "Pixel 5",
+  "description": "Google does it again",
+  "price": 895,
+  "manufacturer": "Google",
+  "weight": 400,
+  "category": "phone",
+  "pictures": [
+    "images/pixel-phone.jpg"
+  ]
+},{
+  "_id": {
+    "$oid": "635421467f66c11fea062407"
+  },
+  "name": "Canon EOS 2000D",
+  "description": "Take amazing photos with this bad boy",
+  "price": 495,
+  "manufacturer": "Canon",
+  "weight": 750,
+  "category": "camera",
+  "pictures": [
+    "images/camera.jpg",
+    "images/camera2.jpeg",
+    "images/camera3.jpg"
+  ]
+}]
